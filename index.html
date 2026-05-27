@@ -1776,7 +1776,8 @@
       params.set("my", state.my.map(item => item.id).join(","));
       params.set("their", state.their.map(item => item.id).join(","));
       params.set("lang", state.lang);
-      return `${location.origin}${location.pathname}?${params.toString()}#calculator`;
+      params.set("view", "trade");
+      return `${location.origin}${location.pathname}?${params.toString()}#market`;
     }
 
     function tradeText() {
@@ -1800,13 +1801,37 @@
       const params = new URLSearchParams(location.search);
       const urlLang = params.get("lang");
       if (translations[urlLang]) state.lang = urlLang;
+      const sharedIds = {};
       ["my", "their"].forEach(side => {
         const ids = (params.get(side) || "").split(",").filter(Boolean);
+        sharedIds[side] = ids;
         state[side] = ids
           .map(id => itemDatabase.find(item => item.id === id))
           .filter(Boolean)
           .map(item => ({ ...item, uid: uid() }));
       });
+
+      if (params.get("view") === "trade" && sharedIds.my.length && sharedIds.their.length) {
+        const myTotal = state.my.reduce((sum, item) => sum + item.value, 0);
+        const theirTotal = state.their.reduce((sum, item) => sum + item.value, 0);
+        const result = outcome(myTotal, theirTotal);
+        const sharedTradeId = `shared-${sharedIds.my.join("-")}-vs-${sharedIds.their.join("-")}`;
+
+        if (!tradeFeed.some(trade => trade.id === sharedTradeId)) {
+          tradeFeed.unshift({
+            id: sharedTradeId,
+            owner: "Shared Link",
+            tag: result,
+            title: result === "W" ? "Shared possible W" : result === "L" ? "Shared possible L" : "Shared fair check",
+            note: "This trade was opened from a share link. Vote W/F/L or use the calculator to make your own.",
+            my: sharedIds.my,
+            their: sharedIds.their,
+            likes: 0,
+            commentsOpen: false,
+            votes: { W: 0, F: 0, L: 0 }
+          });
+        }
+      }
     }
 
     function changeLanguage(event) {
