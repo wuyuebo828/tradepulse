@@ -1,0 +1,38 @@
+[
+  {
+    "id": "trade-1",
+    "owner": "Mika",
+    "tag": "W",
+    "title": "Turned salad into rent money",
+    "note": "Mika somehow flipped a Moon Melon and Ruby Tomato into a Royal Orchid. The lobby went silent.",
+    "my": ["moon-melon", "ruby-tomato"],
+    "their": ["royal-orchid"],
+    "likes": 42,
+    "commentsOpen": false,
+    "votes": { "W": 18, "F": 9, "L": 4 }
+  },
+  {
+    "id": "trade-2",
+    "owner": "Rafa",
+    "tag": "L",
+    "title": "Paid luxury price for discount soup",
+    "note": "Rafa traded Frost Berry for Solar Mango plus Glow Carrot and immediately asked if the server was lagging.",
+    "my": ["frost-berry"],
+    "their": ["solar-mango", "glow-carrot"],
+    "likes": 19,
+    "commentsOpen": false,
+    "votes": { "W": 7, "F": 15, "L": 31 }
+  },
+  {
+    "id": "trade-3",
+    "owner": "Adi",
+    "tag": "W",
+    "title": "The mushroom heist",
+    "note": "Adi walked in with Void Flytrap and walked out with Nebula Mushroom. Someone check their trading license.",
+    "my": ["void-flytrap"],
+    "their": ["nebula-mushroom", "star-sunflower"],
+    "likes": 57,
+    "commentsOpen": false,
+    "votes": { "W": 41, "F": 6, "L": 8 }
+  }
+]

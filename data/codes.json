@@ -1,0 +1,26 @@
+[
+  {
+    "lastChecked": "2026-05-27",
+    "source": "MVP sample - verify in game before publishing",
+    "expiresAt": null,
+    "code": "RDCAward",
+    "reward": "Community reward",
+    "status": "Active"
+  },
+  {
+    "lastChecked": "2026-05-27",
+    "source": "MVP sample - verify in game before publishing",
+    "expiresAt": null,
+    "code": "torigate",
+    "reward": "Event reward",
+    "status": "Active"
+  },
+  {
+    "lastChecked": "2026-05-27",
+    "source": "MVP sample - verify in game before publishing",
+    "expiresAt": null,
+    "code": "BEANORLEAVE10",
+    "reward": "Event reward",
+    "status": "Check first"
+  }
+]

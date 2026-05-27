@@ -1,0 +1,1871 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>TradePulse - Grow a Garden Values, Codes and W/F/L Calculator</title>
+  <meta name="description" content="TradePulse is a lightweight Grow a Garden trade calculator, value list and codes hub for mobile Roblox players." />
+  <style>
+    :root {
+      --bg: #071112;
+      --panel: #10191a;
+      --panel-2: #142021;
+      --line: #26393a;
+      --text: #f0f7f6;
+      --muted: #9eb0ae;
+      --accent: #43d6ae;
+      --warn: #f4c86a;
+      --bad: #ff7181;
+      --good: #51d88f;
+      --top-bg: rgba(7, 17, 18, 0.96);
+      --bottom-bg: rgba(7, 17, 18, 0.97);
+    }
+
+    body[data-theme="clean"] {
+      --bg: #f4f6f8;
+      --panel: #ffffff;
+      --panel-2: #f8fafb;
+      --line: #d8dee4;
+      --text: #111827;
+      --muted: #667085;
+      --accent: #e2231a;
+      --warn: #b7791f;
+      --bad: #d92d20;
+      --good: #039855;
+      --top-bg: rgba(255, 255, 255, 0.96);
+      --bottom-bg: rgba(255, 255, 255, 0.97);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      padding-bottom: 72px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
+      width: min(960px, calc(100% - 24px));
+      margin: 0 auto;
+    }
+
+    .top {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--line);
+      background: var(--top-bg);
+    }
+
+    .top-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      min-height: 58px;
+    }
+
+    .top-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .admin-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--muted);
+      padding: 0 9px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .admin-toggle input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent);
+    }
+
+    .brand {
+      min-width: 0;
+      font-size: 18px;
+      font-weight: 850;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .lang,
+    .style-select {
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--text);
+      padding: 0 8px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 8px 0 12px;
+    }
+
+    .nav a,
+    .btn,
+    .icon-btn {
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .nav a {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 25;
+      border-top: 1px solid var(--line);
+      background: var(--bottom-bg);
+      backdrop-filter: blur(12px);
+    }
+
+    .bottom-nav-inner {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      width: min(720px, 100%);
+      margin: 0 auto;
+      padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+    }
+
+    .bottom-nav a {
+      display: grid;
+      min-height: 48px;
+      place-items: center;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .bottom-nav a:focus,
+    .bottom-nav a:hover {
+      background: var(--panel);
+      color: var(--text);
+      outline: 0;
+    }
+
+    .hero {
+      padding: 18px 0 8px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 760px;
+      font-size: clamp(26px, 7vw, 42px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    h3 {
+      font-size: 15px;
+      line-height: 1.25;
+    }
+
+    .lead {
+      max-width: 680px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .quick {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .quick a {
+      min-height: 58px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 10px;
+      font-weight: 800;
+    }
+
+    .quick span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .today-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .today-card {
+      min-height: 56px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.025);
+      padding: 9px;
+    }
+
+    .today-card strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .notice {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    .section {
+      padding: 14px 0;
+    }
+
+    .section-head {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .pad {
+      padding: 12px;
+    }
+
+    .trade-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .trade-box {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      padding: 10px;
+    }
+
+    .box-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .list {
+      display: grid;
+      min-height: 76px;
+      gap: 7px;
+    }
+
+    .empty {
+      display: grid;
+      min-height: 70px;
+      place-items: center;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+      padding: 10px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 8px;
+      align-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.025);
+      padding: 8px;
+    }
+
+    .token {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(67, 214, 174, 0.12);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 900;
+      overflow: hidden;
+    }
+
+    .token img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 800;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .icon-btn {
+      width: 38px;
+      padding: 0;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 0 12px;
+      font-weight: 800;
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    body[data-theme="dark"] .btn.primary {
+      color: #05231d;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .cell {
+      min-height: 62px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.025);
+      padding: 9px;
+    }
+
+    .cell strong {
+      display: block;
+      margin-top: 3px;
+      font-size: 20px;
+    }
+
+    .win { color: var(--good); }
+    .fair { color: var(--text); }
+    .lose { color: var(--bad); }
+
+    .vote-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .vote {
+      min-height: 54px;
+      border: 0;
+      border-radius: 8px;
+      color: #06110d;
+      font-weight: 900;
+    }
+
+    body[data-theme="clean"] .panel,
+    body[data-theme="clean"] .trade-box,
+    body[data-theme="clean"] .quick a,
+    body[data-theme="clean"] .today-card,
+    body[data-theme="clean"] .cell,
+    body[data-theme="clean"] .row {
+      box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+    }
+
+    body[data-theme="clean"] .brand {
+      color: #111827;
+    }
+
+    body[data-theme="clean"] .nav a,
+    body[data-theme="clean"] .bottom-nav a {
+      color: #475467;
+    }
+
+    body[data-theme="clean"] .token {
+      background: #f2f4f7;
+      color: #344054;
+    }
+
+    .vote[data-vote="W"] { background: var(--good); }
+    .vote[data-vote="F"] { background: #eef3f3; }
+    .vote[data-vote="L"] { background: var(--bad); }
+
+    .bars {
+      display: grid;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .bar-top {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .bar {
+      height: 7px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .fill {
+      height: 100%;
+      border-radius: 99px;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .input {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--text);
+      outline: 0;
+      padding: 0 10px;
+    }
+
+    .input:focus {
+      border-color: var(--accent);
+    }
+
+    .value-list,
+    .code-list,
+    .update-list,
+    .admin-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .admin-pane {
+      display: none;
+    }
+
+    body.admin-on .admin-pane {
+      display: block;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .adjust {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .community-feed {
+      display: grid;
+      gap: 10px;
+      max-height: 620px;
+      overflow-y: auto;
+      padding-right: 2px;
+      padding-bottom: 80px;
+      scroll-padding-bottom: 80px;
+    }
+
+    .post-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      border-radius: 8px;
+      padding: 0 9px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .post-tag.win-tag {
+      background: color-mix(in srgb, var(--good) 14%, transparent);
+      color: var(--good);
+    }
+
+    .post-tag.loss-tag {
+      background: color-mix(in srgb, var(--bad) 14%, transparent);
+      color: var(--bad);
+    }
+
+    .post-tag.fair-tag {
+      background: color-mix(in srgb, var(--warn) 14%, transparent);
+      color: var(--warn);
+    }
+
+    .post-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .comment-box {
+      display: none;
+      margin-top: 8px;
+    }
+
+    .comment-box.open {
+      display: block;
+    }
+
+    .value-row {
+      grid-template-columns: auto 1fr auto;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 25px;
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      color: var(--muted);
+      padding: 0 8px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .code {
+      color: var(--warn);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-weight: 900;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      background: rgba(7, 17, 18, 0.94);
+      padding: 12px;
+    }
+
+    .modal.open { display: block; }
+
+    .dialog {
+      display: flex;
+      flex-direction: column;
+      width: min(520px, 100%);
+      max-height: calc(100vh - 24px);
+      margin: 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      overflow: hidden;
+    }
+
+    .dialog-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      padding: 12px;
+    }
+
+    .dialog-body {
+      display: grid;
+      gap: 8px;
+      min-height: 0;
+      padding: 12px;
+    }
+
+    .options {
+      display: grid;
+      gap: 8px;
+      max-height: 62vh;
+      overflow: auto;
+    }
+
+    .option {
+      width: 100%;
+      text-align: left;
+    }
+
+    .toast {
+      position: fixed;
+      right: 12px;
+      bottom: 12px;
+      z-index: 60;
+      display: none;
+      max-width: calc(100% - 24px);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0c1718;
+      color: var(--text);
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+
+    .toast.show { display: block; }
+
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 10px;
+      padding: 16px 0 32px;
+    }
+
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 18px, 960px); }
+      .top-inner { min-height: 54px; }
+        .quick,
+        .today-strip,
+        .trade-grid,
+      .summary,
+      .split {
+        grid-template-columns: 1fr;
+      }
+      .quick a { min-height: 48px; }
+      .toolbar { grid-template-columns: 1fr; }
+      .section { padding: 11px 0; }
+      .pad { padding: 10px; }
+      .top .nav { display: none; }
+      .admin-toggle {
+        max-width: 42px;
+        overflow: hidden;
+        padding: 0 10px;
+      }
+    }
+
+    @media (min-width: 761px) and (max-width: 1024px) {
+      .wrap { width: min(100% - 32px, 960px); }
+      .quick { grid-template-columns: repeat(3, 1fr); }
+      body { padding-bottom: 78px; }
+      .top-inner { min-height: 64px; }
+      .top .nav { display: none; }
+      .bottom-nav { display: block; }
+      .bottom-nav-inner {
+        width: min(760px, 100%);
+        grid-template-columns: repeat(4, 1fr);
+        padding-inline: 14px;
+      }
+      .bottom-nav a {
+        min-height: 54px;
+        font-size: 13px;
+      }
+      .hero { padding-top: 22px; }
+      .quick a {
+        min-height: 72px;
+        padding: 13px;
+      }
+      .today-card { min-height: 68px; }
+      .trade-grid { gap: 12px; }
+      .trade-box { padding: 12px; }
+      .summary { grid-template-columns: repeat(4, 1fr); }
+      .community-feed {
+        max-height: 720px;
+        padding-bottom: 92px;
+      }
+    }
+
+    @media (min-width: 761px) and (max-width: 900px) {
+      .split {
+        grid-template-columns: 1fr;
+      }
+      .trade-grid {
+        grid-template-columns: 1fr;
+      }
+      .summary {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 901px) and (max-width: 1024px) {
+      .split {
+        grid-template-columns: 0.95fr 1.05fr;
+      }
+    }
+
+    @media (min-width: 1025px) {
+      body { padding-bottom: 0; }
+      .bottom-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top-inner">
+      <a class="brand" href="#top">TradePulse</a>
+      <div class="top-controls">
+        <select class="style-select" id="theme" aria-label="Style">
+          <option value="clean">Clean</option>
+          <option value="dark">Dark</option>
+        </select>
+        <label class="admin-toggle" title="Admin Mode">
+          <input type="checkbox" id="admin-mode" />
+          <span>Admin</span>
+        </label>
+        <select class="lang" id="lang" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="pt">PT</option>
+          <option value="id">ID</option>
+        </select>
+      </div>
+    </div>
+    <nav class="wrap nav" aria-label="Sections">
+      <a href="#calculator" data-i18n="nav_calc">Calculator</a>
+      <a href="#values" data-i18n="nav_values">Values</a>
+      <a href="#market" data-i18n="nav_market">Community</a>
+      <a href="#signals" data-i18n="nav_signals">Signals</a>
+      <a href="#intel" data-i18n="nav_intel">Submit</a>
+      <a href="#codes" data-i18n="nav_codes">Codes</a>
+      <a href="#updates" data-i18n="nav_updates">Updates</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="wrap hero">
+      <h1 data-i18n="hero_title">TradePulse tracks Grow a Garden values, codes and W/F/L checks.</h1>
+      <p class="lead" data-i18n="hero_lead">A lightweight Roblox tool for mobile players. Check values, copy codes and share trades for community votes.</p>
+      <div class="quick">
+        <a href="#calculator"><span data-i18n="quick_calc_title">Trade Check</span><span data-i18n="quick_calc_sub">Build a W/F/L trade</span></a>
+        <a href="#values"><span data-i18n="quick_values_title">Value List</span><span data-i18n="quick_values_sub">Search item prices</span></a>
+        <a href="#market"><span data-i18n="quick_market_title">Community Trades</span><span data-i18n="quick_market_sub">Flex and roast board</span></a>
+      </div>
+      <div class="today-strip">
+        <div class="today-card">
+          <strong data-i18n="today_codes">Codes checked</strong>
+          <span class="meta">May 27</span>
+        </div>
+        <div class="today-card">
+          <strong data-i18n="today_signals">Market signals</strong>
+          <span class="meta" id="today-signal-count">0 review</span>
+        </div>
+        <div class="today-card">
+          <strong data-i18n="today_hot">Hot trade</strong>
+          <span class="meta">Community W/L</span>
+        </div>
+      </div>
+      <div class="notice sub" data-i18n="data_notice">Values are community estimates for testing and can change quickly. Verify codes in game before publishing them as active.</div>
+    </section>
+
+    <section class="wrap section" id="calculator">
+      <div class="section-head">
+        <h2 data-i18n="calc_title">Trade Calculator</h2>
+        <p class="sub" data-i18n="calc_sub">Use base values first, then ask players to vote W/F/L.</p>
+      </div>
+
+      <div class="panel pad">
+        <div class="trade-grid">
+          <div class="trade-box">
+            <div class="box-head">
+              <div>
+                <h3 data-i18n="my_offer">My Offer</h3>
+                <p class="meta"><span id="my-count">0</span> <span data-i18n="items">items</span> | <span id="my-value">0</span></p>
+              </div>
+              <button class="icon-btn" id="add-my" aria-label="Add item">+</button>
+            </div>
+            <div class="list" id="my-list"></div>
+          </div>
+
+          <div class="trade-box">
+            <div class="box-head">
+              <div>
+                <h3 data-i18n="their_offer">Their Offer</h3>
+                <p class="meta"><span id="their-count">0</span> <span data-i18n="items">items</span> | <span id="their-value">0</span></p>
+              </div>
+              <button class="icon-btn" id="add-their" aria-label="Add item">+</button>
+            </div>
+            <div class="list" id="their-list"></div>
+          </div>
+        </div>
+
+        <div class="summary">
+          <div class="cell"><span class="meta" data-i18n="my_total">My Total</span><strong id="score-my">0</strong></div>
+          <div class="cell"><span class="meta" data-i18n="diff">Difference</span><strong id="score-diff">0</strong></div>
+          <div class="cell"><span class="meta" data-i18n="their_total">Their Total</span><strong id="score-their">0</strong></div>
+          <div class="cell"><span class="meta" data-i18n="result">Result</span><strong id="score-result">F</strong></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn primary" id="copy-share" data-i18n="copy_link">Copy Share Link</button>
+          <button class="btn" id="post-trade" data-i18n="post_trade">Post to Community</button>
+          <button class="btn" id="copy-result" data-i18n="copy_text">Copy Text</button>
+          <button class="btn" id="clear-trade" data-i18n="clear">Clear</button>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="wrap section" id="market">
+      <div class="section-head">
+        <h2 data-i18n="market_title">Community Trades</h2>
+        <p class="sub" data-i18n="market_sub">The Flex & Roast Board. Like, comment and vote on other players' past trades.</p>
+      </div>
+      <div class="community-feed" id="trade-feed"></div>
+    </section>
+
+    <section class="wrap section" id="values">
+      <div class="section-head">
+        <h2 data-i18n="values_title">Value List</h2>
+        <p class="sub" data-i18n="values_sub">Starter values for testing. Replace with verified market data later.</p>
+      </div>
+      <div class="toolbar">
+        <input class="input" id="value-search" type="search" autocomplete="off" data-i18n-placeholder="search_placeholder" placeholder="Search items..." />
+        <button class="btn" id="sort-values" data-i18n="sort_high">High Value</button>
+      </div>
+      <div class="value-list" id="value-list"></div>
+    </section>
+
+    <section class="wrap section" id="signals">
+      <div class="section-head">
+        <h2 data-i18n="signals_title">Market Signals</h2>
+        <p class="sub" data-i18n="signals_sub">Early anti-manipulation alerts from community votes. Final value changes should still be reviewed by an admin.</p>
+      </div>
+      <div class="split">
+        <div>
+          <h3 data-i18n="signals_queue">Signal Queue</h3>
+          <div class="value-list" id="signals-list"></div>
+        </div>
+        <div class="admin-pane">
+          <h3 data-i18n="admin_review">Admin Review</h3>
+          <div class="admin-list" id="admin-list"></div>
+          <div style="height:10px"></div>
+          <h3 data-i18n="admin_queue">Player Intel Queue</h3>
+          <div class="admin-list" id="intel-queue"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap section" id="intel">
+      <div class="section-head">
+        <h2 data-i18n="intel_title">Submit Intel</h2>
+        <p class="sub" data-i18n="intel_sub">Players can report price changes, new items, or code updates. Admins review submissions before anything becomes official.</p>
+      </div>
+      <div class="panel pad">
+        <div class="toolbar">
+          <select class="input" id="intel-type" aria-label="Intel type">
+            <option value="price" data-i18n="intel_price">Price change</option>
+            <option value="item" data-i18n="intel_item">New item</option>
+            <option value="code" data-i18n="intel_code">Code update</option>
+          </select>
+          <input class="input" id="intel-target" type="text" data-i18n-placeholder="intel_target" placeholder="Item or code name" />
+        </div>
+        <input class="input" id="intel-value" type="text" data-i18n-placeholder="intel_value" placeholder="Suggested value or reward" />
+        <div style="height:8px"></div>
+        <input class="input" id="intel-note" type="text" data-i18n-placeholder="intel_note" placeholder="Short note, source, or proof link" />
+        <div class="btn-row">
+          <button class="btn primary" id="submit-intel" data-i18n="submit_intel">Submit for Review</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap section" id="codes">
+      <div class="section-head">
+        <h2 data-i18n="codes_title">Codes</h2>
+        <p class="sub" data-i18n="codes_sub">Codes can expire without notice. Last checked: May 27, 2026.</p>
+      </div>
+      <div class="code-list" id="codes-list"></div>
+    </section>
+
+    <section class="wrap section" id="updates">
+      <div class="section-head">
+        <h2 data-i18n="updates_title">Updates</h2>
+        <p class="sub" data-i18n="updates_sub">Short notes for value checks, code checks and events.</p>
+      </div>
+      <div class="update-list" id="updates-list"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap sub" data-i18n="footer">TradePulse is an unofficial fan-made tool. Not affiliated with Roblox or Grow a Garden. Never enter your Roblox password on third-party sites.</div>
+  </footer>
+
+  <nav class="bottom-nav" aria-label="Mobile navigation">
+    <div class="bottom-nav-inner">
+      <a href="#calculator" data-i18n="nav_calc">Calculator</a>
+      <a href="#values" data-i18n="nav_values">Values</a>
+      <a href="#market" data-i18n="nav_market">Community</a>
+      <a href="#codes" data-i18n="nav_codes">Codes</a>
+    </div>
+  </nav>
+
+  <section class="modal" id="item-modal" aria-modal="true" role="dialog">
+    <div class="dialog">
+      <div class="dialog-head">
+        <h2 id="modal-title" data-i18n="add_item">Add Item</h2>
+        <button class="icon-btn" id="close-modal" aria-label="Close">x</button>
+      </div>
+      <div class="dialog-body">
+        <input class="input" id="item-search" type="search" autocomplete="off" data-i18n-placeholder="search_placeholder" placeholder="Search items..." />
+        <div class="options" id="item-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const translations = {
+      en: {
+        nav_calc: "Calculator", nav_values: "Values", nav_market: "Community", nav_signals: "Signals", nav_intel: "Submit", nav_codes: "Codes", nav_updates: "Updates",
+        hero_title: "TradePulse tracks Grow a Garden values, codes and W/F/L checks.",
+        hero_lead: "A lightweight Roblox tool for mobile players. Check values, copy codes and share trades for community votes.",
+        quick_calc_title: "Trade Check", quick_calc_sub: "Build a W/F/L trade",
+        quick_values_title: "Value List", quick_values_sub: "Search item prices",
+        quick_market_title: "Community Trades", quick_market_sub: "Flex and roast board",
+        today_codes: "Codes checked", today_signals: "Market signals", today_hot: "Hot trade",
+        calc_title: "Trade Calculator", calc_sub: "Create your trade, copy a share link, then let other players vote on its trade page.",
+        my_offer: "My Offer", their_offer: "Their Offer", items: "items",
+        my_total: "My Total", diff: "Difference", their_total: "Their Total", result: "Result",
+        copy_link: "Copy Share Link", copy_text: "Copy Text", clear: "Clear",
+        win: "Win", fair: "Fair", lose: "Lose", market_title: "Community Trades", market_sub: "The Flex & Roast Board. Like, comment and vote on other players' past trades.",
+        values_title: "Value List", values_sub: "Starter values for testing. Replace with verified market data later.",
+        search_placeholder: "Search items...", sort_high: "High Value", sort_low: "Low Value",
+        codes_title: "Codes", codes_sub: "Codes can expire without notice. Last checked: May 27, 2026.",
+        updates_title: "Updates", updates_sub: "Short notes for value checks, code checks and events.",
+        footer: "TradePulse is an unofficial fan-made tool. Not affiliated with Roblox or Grow a Garden. Never enter your Roblox password on third-party sites.",
+        add_item: "Add Item", no_items: "Tap + to add an item", no_found: "No items found",
+        copied_link: "Share link copied", copied_text: "Result copied", copied_code: "Code copied", copy_blocked: "Copy blocked by browser",
+        value: "Sheckles Value", demand: "Demand", trend: "Trend", copy: "Copy", like: "Like", comment: "Comment", comment_placeholder: "Add a quick roast or advice...", post_trade: "Post to Community", posted_trade: "Trade posted to Community", add_items_first: "Add items to both sides first", signals_title: "Market Signals", signals_sub: "Early anti-manipulation alerts from community votes. Final value changes should still be reviewed by an admin.", review: "Review", watch: "Watch", stable: "Stable", loss_rate: "Loss rate", signals_queue: "Signal Queue", admin_review: "Admin Review", current_value: "Current", new_value: "New value", update_value: "Update", value_updated: "Value updated", updated: "Updated", confidence: "Confidence", checked: "Checked", data_notice: "Values are community estimates for testing and can change quickly. Verify codes in game before publishing them as active.", report: "Report", works: "Works", expired: "Expired", intel_title: "Submit Intel", intel_sub: "Players can report price changes, new items, or code updates. Admins review submissions before anything becomes official.", intel_price: "Price change", intel_item: "New item", intel_code: "Code update", intel_target: "Item or code name", intel_value: "Suggested value or reward", intel_note: "Short note, source, or proof link", submit_intel: "Submit for Review", intel_saved: "Submitted for admin review", admin_queue: "Player Intel Queue", no_intel: "No player intel yet"
+      },
+      pt: {
+        nav_calc: "Calculadora", nav_values: "Valores", nav_market: "Comunidade", nav_signals: "Sinais", nav_intel: "Enviar", nav_codes: "Codigos", nav_updates: "Updates",
+        hero_title: "TradePulse acompanha valores, codigos e W/F/L de Grow a Garden.",
+        hero_lead: "Uma ferramenta Roblox leve para celular. Veja valores, copie codigos e compartilhe trocas para votos da comunidade.",
+        quick_calc_title: "Checar troca", quick_calc_sub: "Monte uma troca W/F/L",
+        quick_values_title: "Lista de valores", quick_values_sub: "Pesquise precos",
+        quick_market_title: "Trocas da comunidade", quick_market_sub: "Flex e roast board",
+        today_codes: "Codigos checados", today_signals: "Sinais de mercado", today_hot: "Trade quente",
+        calc_title: "Calculadora de troca", calc_sub: "Crie sua troca, copie um link e deixe outros jogadores votarem na pagina da troca.",
+        my_offer: "Minha oferta", their_offer: "Oferta deles", items: "itens",
+        my_total: "Meu total", diff: "Diferenca", their_total: "Total deles", result: "Resultado",
+        copy_link: "Copiar link", copy_text: "Copiar texto", clear: "Limpar",
+        win: "Ganho", fair: "Justo", lose: "Perda", market_title: "Trocas da comunidade", market_sub: "The Flex & Roast Board. Curta, comente e vote em trocas antigas de outros jogadores.",
+        values_title: "Lista de valores", values_sub: "Valores iniciais para teste. Troque por dados verificados depois.",
+        search_placeholder: "Pesquisar itens...", sort_high: "Maior valor", sort_low: "Menor valor",
+        codes_title: "Codigos", codes_sub: "Codigos podem expirar sem aviso. Checado em: 27 de maio de 2026.",
+        updates_title: "Updates", updates_sub: "Notas curtas sobre valores, codigos e eventos.",
+        footer: "TradePulse e uma ferramenta nao oficial de fas. Sem afiliacao com Roblox ou Grow a Garden. Nunca digite sua senha Roblox em sites de terceiros.",
+        add_item: "Adicionar item", no_items: "Toque + para adicionar", no_found: "Nenhum item encontrado",
+        copied_link: "Link copiado", copied_text: "Texto copiado", copied_code: "Codigo copiado", copy_blocked: "Copia bloqueada pelo navegador",
+        value: "Valor em Sheckles", demand: "Demanda", trend: "Tendencia", copy: "Copiar", like: "Curtir", comment: "Comentar", comment_placeholder: "Adicione um roast ou conselho...", post_trade: "Postar na comunidade", posted_trade: "Troca postada na comunidade", add_items_first: "Adicione itens dos dois lados primeiro", signals_title: "Sinais de mercado", signals_sub: "Alertas iniciais anti-manipulacao vindos dos votos da comunidade. Mudancas finais ainda precisam de revisao de admin.", review: "Revisar", watch: "Observar", stable: "Estavel", loss_rate: "Taxa de perda", signals_queue: "Fila de sinais", admin_review: "Revisao admin", current_value: "Atual", new_value: "Novo valor", update_value: "Atualizar", value_updated: "Valor atualizado", updated: "Atualizado", confidence: "Confianca", checked: "Checado", data_notice: "Valores sao estimativas da comunidade para teste e podem mudar rapido. Verifique codigos no jogo antes de publicar como ativos.", report: "Reportar", works: "Funciona", expired: "Expirou", intel_title: "Enviar intel", intel_sub: "Jogadores podem reportar mudancas de preco, novos itens ou codigos. Admins revisam antes de virar oficial.", intel_price: "Mudanca de preco", intel_item: "Novo item", intel_code: "Atualizacao de codigo", intel_target: "Nome do item ou codigo", intel_value: "Valor ou recompensa sugerida", intel_note: "Nota curta, fonte ou prova", submit_intel: "Enviar para revisao", intel_saved: "Enviado para revisao admin", admin_queue: "Fila de intel", no_intel: "Sem intel ainda"
+      },
+      id: {
+        nav_calc: "Kalkulator", nav_values: "Nilai", nav_market: "Komunitas", nav_signals: "Sinyal", nav_intel: "Kirim", nav_codes: "Kode", nav_updates: "Update",
+        hero_title: "TradePulse melacak nilai, kode, dan cek W/F/L Grow a Garden.",
+        hero_lead: "Tool Roblox ringan untuk pemain mobile. Cek nilai, salin kode, dan bagikan trade untuk vote komunitas.",
+        quick_calc_title: "Cek Trade", quick_calc_sub: "Buat trade W/F/L",
+        quick_values_title: "Daftar Nilai", quick_values_sub: "Cari harga item",
+        quick_market_title: "Trade Komunitas", quick_market_sub: "Flex dan roast board",
+        today_codes: "Kode dicek", today_signals: "Sinyal market", today_hot: "Trade hot",
+        calc_title: "Kalkulator Trade", calc_sub: "Buat trade, salin link, lalu biarkan pemain lain vote di halaman trade.",
+        my_offer: "Offer Saya", their_offer: "Offer Mereka", items: "item",
+        my_total: "Total Saya", diff: "Selisih", their_total: "Total Mereka", result: "Hasil",
+        copy_link: "Salin Link", copy_text: "Salin Teks", clear: "Bersihkan",
+        win: "Win", fair: "Fair", lose: "Lose", market_title: "Trade Komunitas", market_sub: "The Flex & Roast Board. Like, komentar, dan vote trade lama dari pemain lain.",
+        values_title: "Daftar Nilai", values_sub: "Nilai awal untuk tes. Ganti dengan data market terverifikasi nanti.",
+        search_placeholder: "Cari item...", sort_high: "Nilai Tinggi", sort_low: "Nilai Rendah",
+        codes_title: "Kode", codes_sub: "Kode bisa kedaluwarsa tanpa pemberitahuan. Dicek: 27 Mei 2026.",
+        updates_title: "Update", updates_sub: "Catatan singkat untuk cek nilai, kode, dan event.",
+        footer: "TradePulse adalah tool fan-made tidak resmi. Tidak terafiliasi dengan Roblox atau Grow a Garden. Jangan pernah masukkan password Roblox di situs pihak ketiga.",
+        add_item: "Tambah Item", no_items: "Tap + untuk tambah item", no_found: "Item tidak ditemukan",
+        copied_link: "Link disalin", copied_text: "Teks disalin", copied_code: "Kode disalin", copy_blocked: "Salin diblokir browser",
+        value: "Nilai Sheckles", demand: "Demand", trend: "Tren", copy: "Salin", like: "Like", comment: "Komentar", comment_placeholder: "Tulis roast atau saran singkat...", post_trade: "Post ke Komunitas", posted_trade: "Trade diposting ke komunitas", add_items_first: "Tambahkan item di kedua sisi dulu", signals_title: "Sinyal Market", signals_sub: "Alert awal anti-manipulasi dari vote komunitas. Perubahan nilai final tetap perlu dicek admin.", review: "Review", watch: "Pantau", stable: "Stabil", loss_rate: "Rate loss", signals_queue: "Antrean Sinyal", admin_review: "Review Admin", current_value: "Saat ini", new_value: "Nilai baru", update_value: "Update", value_updated: "Nilai diupdate", updated: "Diupdate", confidence: "Keyakinan", checked: "Dicek", data_notice: "Nilai adalah estimasi komunitas untuk tes dan bisa berubah cepat. Verifikasi kode di game sebelum dipublikasikan aktif.", report: "Report", works: "Works", expired: "Expired", intel_title: "Kirim Intel", intel_sub: "Pemain bisa report perubahan harga, item baru, atau update kode. Admin review sebelum jadi resmi.", intel_price: "Perubahan harga", intel_item: "Item baru", intel_code: "Update kode", intel_target: "Nama item atau kode", intel_value: "Nilai atau reward saran", intel_note: "Catatan, sumber, atau bukti", submit_intel: "Kirim untuk Review", intel_saved: "Dikirim untuk review admin", admin_queue: "Antrean Intel", no_intel: "Belum ada intel"
+      }
+    };
+
+    let itemDatabase = [
+      { id: "star-sunflower", name: "Star Sunflower", short: "SS", type: "Crop", rarity: "Rare", value: 100, demand: "Low", trend: "Stable" },
+      { id: "moon-melon", name: "Moon Melon", short: "MM", type: "Crop", rarity: "Rare", value: 250, demand: "Medium", trend: "Stable" },
+      { id: "glow-carrot", name: "Glow Carrot", short: "GC", type: "Crop", rarity: "Epic", value: 450, demand: "Medium", trend: "Up" },
+      { id: "crystal-cabbage", name: "Crystal Cabbage", short: "CC", type: "Crop", rarity: "Epic", value: 700, demand: "Medium", trend: "Stable" },
+      { id: "ruby-tomato", name: "Ruby Tomato", short: "RT", type: "Crop", rarity: "Legendary", value: 950, demand: "High", trend: "Up" },
+      { id: "golden-watermelon", name: "Golden Watermelon", short: "GW", type: "Crop", rarity: "Legendary", value: 1300, demand: "High", trend: "Stable" },
+      { id: "prism-pumpkin", name: "Prism Pumpkin", short: "PP", type: "Crop", rarity: "Mythic", value: 1800, demand: "High", trend: "Up" },
+      { id: "royal-orchid", name: "Royal Orchid", short: "RO", type: "Plant", rarity: "Mythic", value: 2400, demand: "High", trend: "Stable" },
+      { id: "cloud-peach", name: "Cloud Peach", short: "CP", type: "Crop", rarity: "Mythic", value: 3100, demand: "Medium", trend: "Down" },
+      { id: "frost-berry", name: "Frost Berry", short: "FB", type: "Crop", rarity: "Divine", value: 3900, demand: "High", trend: "Up" },
+      { id: "solar-mango", name: "Solar Mango", short: "SM", type: "Crop", rarity: "Divine", value: 4800, demand: "High", trend: "Stable" },
+      { id: "void-flytrap", name: "Void Flytrap", short: "VF", type: "Plant", rarity: "Divine", value: 6000, demand: "Very High", trend: "Up" },
+      { id: "nebula-mushroom", name: "Nebula Mushroom", short: "NM", type: "Plant", rarity: "Secret", value: 7200, demand: "Very High", trend: "Stable" },
+      { id: "celestial-pineapple", name: "Celestial Pineapple", short: "CPN", type: "Crop", rarity: "Secret", value: 8600, demand: "Very High", trend: "Up" },
+      { id: "divine-seed-pack", name: "Divine Seed Pack", short: "DSP", type: "Pack", rarity: "Event", value: 10000, demand: "Very High", trend: "Up" }
+    ];
+
+    let codeDatabase = [
+      { code: "RDCAward", reward: "Community reward", status: "Active" },
+      { code: "torigate", reward: "Event reward", status: "Active" },
+      { code: "BEANORLEAVE10", reward: "Event reward", status: "Check first" }
+    ];
+
+    let updateDatabase = [
+      { title: "Codes check added", text: "Codes need manual verification because they can expire without notice." },
+      { title: "Share links planned", text: "Trade links are designed for Discord, Reddit and short video comments." },
+      { title: "Starter values added", text: "Current values are samples and should be replaced with verified market data." }
+    ];
+
+    let tradeFeed = [
+      {
+        id: "trade-1",
+        owner: "Mika",
+        tag: "W",
+        title: "Turned salad into rent money",
+        note: "Mika somehow flipped a Moon Melon and Ruby Tomato into a Royal Orchid. The lobby went silent.",
+        my: ["moon-melon", "ruby-tomato"],
+        their: ["royal-orchid"],
+        likes: 42,
+        commentsOpen: false,
+        votes: { W: 18, F: 9, L: 4 }
+      },
+      {
+        id: "trade-2",
+        owner: "Rafa",
+        tag: "L",
+        title: "Paid luxury price for discount soup",
+        note: "Rafa traded Frost Berry for Solar Mango plus Glow Carrot and immediately asked if the server was lagging.",
+        my: ["frost-berry"],
+        their: ["solar-mango", "glow-carrot"],
+        likes: 19,
+        commentsOpen: false,
+        votes: { W: 7, F: 15, L: 31 }
+      },
+      {
+        id: "trade-3",
+        owner: "Adi",
+        tag: "W",
+        title: "The mushroom heist",
+        note: "Adi walked in with Void Flytrap and walked out with Nebula Mushroom. Someone check their trading license.",
+        my: ["void-flytrap"],
+        their: ["nebula-mushroom", "star-sunflower"],
+        likes: 57,
+        commentsOpen: false,
+        votes: { W: 41, F: 6, L: 8 }
+      }
+    ];
+
+    function getSavedLang() {
+      try {
+        return localStorage.getItem("tradePulseLang") || localStorage.getItem("growToolsLang") || "en";
+      } catch {
+        return "en";
+      }
+    }
+
+    function getSavedTheme() {
+      try {
+        return localStorage.getItem("tradePulseTheme") || localStorage.getItem("growToolsTheme") || "clean";
+      } catch {
+        return "clean";
+      }
+    }
+
+    function setSavedLang(lang) {
+      try {
+        localStorage.setItem("tradePulseLang", lang);
+      } catch {
+        return;
+      }
+    }
+
+    function setSavedTheme(theme) {
+      try {
+        localStorage.setItem("tradePulseTheme", theme);
+      } catch {
+        return;
+      }
+    }
+
+    function getSavedAdminMode() {
+      try {
+        return localStorage.getItem("tradePulseAdmin") === "1" || localStorage.getItem("growToolsAdmin") === "1";
+      } catch {
+        return false;
+      }
+    }
+
+    function setSavedAdminMode(enabled) {
+      try {
+        localStorage.setItem("tradePulseAdmin", enabled ? "1" : "0");
+      } catch {
+        return;
+      }
+    }
+
+    function getSavedTrades() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("tradePulseUserTrades") || localStorage.getItem("growToolsUserTrades") || "[]");
+        return Array.isArray(saved) ? saved : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function setSavedTrades(trades) {
+      try {
+        localStorage.setItem("tradePulseUserTrades", JSON.stringify(trades.slice(0, 20)));
+      } catch {
+        return;
+      }
+    }
+
+    function getSavedIntel() {
+      try {
+        const saved = JSON.parse(localStorage.getItem("tradePulseIntelQueue") || localStorage.getItem("growToolsIntelQueue") || "[]");
+        return Array.isArray(saved) ? saved : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function setSavedIntel(queue) {
+      try {
+        localStorage.setItem("tradePulseIntelQueue", JSON.stringify(queue.slice(0, 50)));
+      } catch {
+        return;
+      }
+    }
+
+    async function readJson(path, fallback) {
+      try {
+        const response = await fetch(path, { cache: "no-store" });
+        if (!response.ok) return fallback;
+        return await response.json();
+      } catch {
+        return fallback;
+      }
+    }
+
+    async function loadDataFiles() {
+      const [items, codes, updates, trades] = await Promise.all([
+        readJson("data/items.json", itemDatabase),
+        readJson("data/codes.json", codeDatabase),
+        readJson("data/updates.json", updateDatabase),
+        readJson("data/trades.json", tradeFeed)
+      ]);
+
+      itemDatabase = items.map(item => ({ ...item, icon: item.icon || `assets/items/${item.id}.svg` }));
+      codeDatabase = codes;
+      updateDatabase = updates;
+      tradeFeed = [...getSavedTrades(), ...trades];
+    }
+
+    const state = {
+      my: [],
+      their: [],
+      activeSide: "my",
+      votes: { W: 47, F: 31, L: 22 },
+      sortHigh: true,
+      lang: getSavedLang(),
+      theme: getSavedTheme(),
+      adminMode: getSavedAdminMode(),
+      intelQueue: getSavedIntel()
+    };
+
+    const money = new Intl.NumberFormat("en-US");
+    const byId = id => document.getElementById(id);
+    const t = key => (translations[state.lang] || translations.en)[key] || translations.en[key] || key;
+    const formatValue = value => `${money.format(value)} Sheckles`;
+    const uid = () => window.crypto && crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
+    const itemIcon = item => item.icon ? `<img src="${item.icon}" alt="" loading="lazy" />` : item.short;
+
+    function applyLanguage() {
+      document.documentElement.lang = state.lang;
+      byId("lang").value = state.lang;
+      document.querySelectorAll("[data-i18n]").forEach(node => {
+        node.textContent = t(node.dataset.i18n);
+      });
+      document.querySelectorAll("[data-i18n-placeholder]").forEach(node => {
+        node.placeholder = t(node.dataset.i18nPlaceholder);
+      });
+      byId("sort-values").textContent = state.sortHigh ? t("sort_high") : t("sort_low");
+      renderTrade();
+      renderValues();
+      renderCodes();
+      renderUpdates();
+      renderTradeFeed();
+      renderSignals();
+      renderAdminReview();
+      renderIntelQueue();
+    }
+
+    function applyTheme() {
+      document.body.dataset.theme = state.theme;
+      byId("theme").value = state.theme;
+      document.body.classList.toggle("admin-on", state.adminMode);
+      byId("admin-mode").checked = state.adminMode;
+    }
+
+    function showToast(message) {
+      const toast = byId("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    function openModal(side) {
+      state.activeSide = side;
+      byId("modal-title").textContent = side === "my" ? t("my_offer") : t("their_offer");
+      byId("item-modal").classList.add("open");
+      byId("item-search").value = "";
+      renderItemOptions();
+      setTimeout(() => byId("item-search").focus(), 0);
+    }
+
+    function closeModal() {
+      byId("item-modal").classList.remove("open");
+    }
+
+    function addItem(item) {
+      state[state.activeSide].push({ ...item, uid: uid() });
+      closeModal();
+      renderTrade();
+    }
+
+    function removeItem(side, itemUid) {
+      state[side] = state[side].filter(item => item.uid !== itemUid);
+      renderTrade();
+    }
+
+    function total(side) {
+      return state[side].reduce((sum, item) => sum + item.value, 0);
+    }
+
+    function outcome(myTotal, theirTotal) {
+      if (theirTotal > myTotal) return "W";
+      if (theirTotal < myTotal) return "L";
+      return "F";
+    }
+
+    function outcomeClass(result) {
+      return result === "W" ? "win" : result === "L" ? "lose" : "fair";
+    }
+
+    function renderOffer(side) {
+      const list = byId(`${side}-list`);
+      list.innerHTML = "";
+      if (!state[side].length) {
+        list.innerHTML = `<div class="empty">${t("no_items")}</div>`;
+        return;
+      }
+      state[side].forEach(item => {
+        const row = document.createElement("div");
+        row.className = "row";
+        row.innerHTML = `
+          <span class="token">${itemIcon(item)}</span>
+          <div>
+            <div class="name">${item.name}</div>
+            <div class="meta">${item.rarity} | ${t("value")} ${formatValue(item.value)}</div>
+          </div>
+          <button class="icon-btn" aria-label="Remove ${item.name}">x</button>
+        `;
+        row.querySelector("button").addEventListener("click", () => removeItem(side, item.uid));
+        list.appendChild(row);
+      });
+    }
+
+    function renderTrade() {
+      const myTotal = total("my");
+      const theirTotal = total("their");
+      const diff = theirTotal - myTotal;
+      const result = outcome(myTotal, theirTotal);
+      renderOffer("my");
+      renderOffer("their");
+      byId("my-count").textContent = state.my.length;
+      byId("their-count").textContent = state.their.length;
+      byId("my-value").textContent = formatValue(myTotal);
+      byId("their-value").textContent = formatValue(theirTotal);
+      byId("score-my").textContent = formatValue(myTotal);
+      byId("score-their").textContent = formatValue(theirTotal);
+      byId("score-diff").textContent = diff > 0 ? `+${formatValue(diff)}` : formatValue(diff);
+      byId("score-diff").className = outcomeClass(result);
+      byId("score-result").textContent = result;
+      byId("score-result").className = outcomeClass(result);
+    }
+
+    function renderItemOptions() {
+      const query = byId("item-search").value.trim().toLowerCase();
+      const matches = itemDatabase.filter(item => `${item.name} ${item.type} ${item.rarity}`.toLowerCase().includes(query));
+      const list = byId("item-list");
+      list.innerHTML = "";
+      if (!matches.length) {
+        list.innerHTML = `<div class="empty">${t("no_found")}</div>`;
+        return;
+      }
+      matches.forEach(item => {
+        const button = document.createElement("button");
+        button.className = "row option";
+        button.innerHTML = `
+          <span class="token">${itemIcon(item)}</span>
+          <div>
+            <div class="name">${item.name}</div>
+            <div class="meta">${item.rarity} | ${item.type} | ${formatValue(item.value)}</div>
+          </div>
+          <span class="pill">+</span>
+        `;
+        button.addEventListener("click", () => addItem(item));
+        list.appendChild(button);
+      });
+    }
+
+    function renderValues() {
+      const query = byId("value-search").value.trim().toLowerCase();
+      const items = itemDatabase
+        .filter(item => `${item.name} ${item.type} ${item.rarity} ${item.demand}`.toLowerCase().includes(query))
+        .sort((a, b) => state.sortHigh ? b.value - a.value : a.value - b.value);
+      const list = byId("value-list");
+      list.innerHTML = "";
+      items.forEach(item => {
+        const row = document.createElement("article");
+        row.className = "row value-row";
+        row.innerHTML = `
+          <span class="token">${itemIcon(item)}</span>
+          <div>
+            <h3 class="name">${item.name}</h3>
+            <p class="meta">${item.rarity} | ${t("demand")}: ${item.demand}</p>
+            <p class="meta">${t("updated")}: ${item.lastUpdated || "TBD"} | ${t("confidence")}: ${item.confidence || "Sample"}</p>
+          </div>
+          <div>
+            <strong>${formatValue(item.value)}</strong>
+            <button class="btn report-btn" data-item="${item.id}">${t("report")}</button>
+          </div>
+        `;
+        row.querySelector(".report-btn").addEventListener("click", () => addIntel({
+          type: "price",
+          target: item.name,
+          value: formatValue(item.value),
+          note: "Player reported this value as possibly wrong"
+        }));
+        list.appendChild(row);
+      });
+    }
+
+    function renderCodes() {
+      const list = byId("codes-list");
+      list.innerHTML = "";
+      codeDatabase.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "row";
+        row.innerHTML = `
+          <span class="token">CD</span>
+          <div>
+            <div class="code">${item.code}</div>
+            <div class="meta">${item.reward} | ${item.status}</div>
+            <div class="meta">${t("checked")}: ${item.lastChecked || "TBD"} | ${item.source || "Needs verification"}</div>
+          </div>
+          <div class="btn-row">
+            <button class="btn copy-code">${t("copy")}</button>
+            <button class="btn works-code">${t("works")}</button>
+            <button class="btn expired-code">${t("expired")}</button>
+          </div>
+        `;
+        row.querySelector(".copy-code").addEventListener("click", () => copyText(item.code, t("copied_code")));
+        row.querySelector(".works-code").addEventListener("click", () => addIntel({
+          type: "code",
+          target: item.code,
+          value: item.reward,
+          note: "Player marked this code as working"
+        }));
+        row.querySelector(".expired-code").addEventListener("click", () => addIntel({
+          type: "code",
+          target: item.code,
+          value: item.reward,
+          note: "Player marked this code as expired"
+        }));
+        list.appendChild(row);
+      });
+    }
+
+    function renderUpdates() {
+      const list = byId("updates-list");
+      list.innerHTML = "";
+      updateDatabase.forEach(item => {
+        const row = document.createElement("article");
+        row.className = "row";
+        row.innerHTML = `
+          <span class="token">UP</span>
+          <div>
+            <h3>${item.title}</h3>
+            <p class="meta">${item.text}</p>
+          </div>
+          <span></span>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    function renderVoteBars(votes) {
+      const totalVotes = votes.W + votes.F + votes.L;
+      const colors = { W: "var(--good)", F: "#eef3f3", L: "var(--bad)" };
+      return Object.entries(votes).map(([key, count]) => {
+        const percent = totalVotes ? Math.round((count / totalVotes) * 100) : 0;
+        return `
+          <div class="bar-top"><span>${key}</span><span>${percent}%</span></div>
+          <div class="bar"><div class="fill" style="width:${percent}%; background:${colors[key]}"></div></div>
+        `;
+      }).join("");
+    }
+
+    function renderTradeFeed() {
+      const list = byId("trade-feed");
+      list.innerHTML = "";
+
+      tradeFeed.forEach(trade => {
+        const myItems = trade.my.map(id => itemDatabase.find(item => item.id === id)).filter(Boolean);
+        const theirItems = trade.their.map(id => itemDatabase.find(item => item.id === id)).filter(Boolean);
+        const myTotal = myItems.reduce((sum, item) => sum + item.value, 0);
+        const theirTotal = theirItems.reduce((sum, item) => sum + item.value, 0);
+        const result = outcome(myTotal, theirTotal);
+        const tagText = trade.tag === "W" ? "W (Win)" : trade.tag === "L" ? "L (Loss)" : "F (Fair)";
+        const tagClass = trade.tag === "W" ? "win-tag" : trade.tag === "L" ? "loss-tag" : "fair-tag";
+        const card = document.createElement("article");
+        card.className = "panel pad";
+        card.innerHTML = `
+          <div class="box-head">
+            <div>
+              <h3>${trade.title}</h3>
+              <p class="meta">${trade.owner}'s trade | ${formatValue(myTotal)} vs ${formatValue(theirTotal)} | Auto ${result}</p>
+            </div>
+            <span class="post-tag ${tagClass}">${tagText}</span>
+          </div>
+          <p class="sub">${trade.note}</p>
+          <div class="trade-grid">
+            <div class="trade-box">
+              <p class="meta">${t("my_offer")}</p>
+              <strong>${myItems.map(item => item.name).join(", ")}</strong>
+            </div>
+            <div class="trade-box">
+              <p class="meta">${t("their_offer")}</p>
+              <strong>${theirItems.map(item => item.name).join(", ")}</strong>
+            </div>
+          </div>
+          <div class="vote-grid">
+            <button class="vote" data-vote="W">W<br><span>${t("win")}</span></button>
+            <button class="vote" data-vote="F">F<br><span>${t("fair")}</span></button>
+            <button class="vote" data-vote="L">L<br><span>${t("lose")}</span></button>
+          </div>
+          <div class="bars">${renderVoteBars(trade.votes)}</div>
+          <div class="post-actions">
+            <button class="btn like-btn" data-action="like">${t("like")} (${trade.likes})</button>
+            <button class="btn comment-btn" data-action="comment">${t("comment")}</button>
+          </div>
+          <div class="comment-box ${trade.commentsOpen ? "open" : ""}">
+            <input class="input" type="text" placeholder="${t("comment_placeholder")}" />
+          </div>
+        `;
+        card.querySelectorAll(".vote").forEach(button => {
+          button.addEventListener("click", () => {
+            trade.votes[button.dataset.vote] += 1;
+            setSavedTrades(tradeFeed.filter(item => item.userPost));
+            renderTradeFeed();
+            renderSignals();
+          });
+        });
+        card.querySelector(".like-btn").addEventListener("click", () => {
+          trade.likes += 1;
+          setSavedTrades(tradeFeed.filter(item => item.userPost));
+          renderTradeFeed();
+        });
+        card.querySelector(".comment-btn").addEventListener("click", () => {
+          trade.commentsOpen = !trade.commentsOpen;
+          setSavedTrades(tradeFeed.filter(item => item.userPost));
+          renderTradeFeed();
+        });
+        list.appendChild(card);
+      });
+    }
+
+    function postCurrentTrade() {
+      if (!state.my.length || !state.their.length) {
+        showToast(t("add_items_first"));
+        return;
+      }
+
+      const myTotal = total("my");
+      const theirTotal = total("their");
+      const result = outcome(myTotal, theirTotal);
+      const title = result === "W" ? "Fresh possible W" : result === "L" ? "Fresh possible L" : "Fresh fair check";
+      const note = result === "W"
+        ? "Posted from the calculator. The numbers say it might be a win, but the community gets the final roast."
+        : result === "L"
+          ? "Posted from the calculator. The numbers look rough, so this one is ready for public judgment."
+          : "Posted from the calculator. The values are close, so the comments may decide it.";
+
+      tradeFeed.unshift({
+        id: `trade-${Date.now()}`,
+        owner: "You",
+        userPost: true,
+        tag: result,
+        title,
+        note,
+        my: state.my.map(item => item.id),
+        their: state.their.map(item => item.id),
+        likes: 0,
+        commentsOpen: false,
+        votes: { W: 0, F: 0, L: 0 }
+      });
+
+      setSavedTrades(tradeFeed.filter(trade => trade.userPost));
+      renderTradeFeed();
+      renderSignals();
+      renderAdminReview();
+      showToast(t("posted_trade"));
+      location.hash = "market";
+    }
+
+    function analyzeMarketSignals() {
+      const stats = new Map();
+
+      tradeFeed.forEach(trade => {
+        const votes = trade.votes.W + trade.votes.F + trade.votes.L;
+        if (!votes) return;
+
+        [...trade.my, ...trade.their].forEach(id => {
+          const current = stats.get(id) || { appearances: 0, weightedLoss: 0, votes: 0 };
+          current.appearances += 1;
+          current.weightedLoss += trade.votes.L;
+          current.votes += votes;
+          stats.set(id, current);
+        });
+      });
+
+      return [...stats.entries()]
+        .map(([id, stat]) => {
+          const item = itemDatabase.find(entry => entry.id === id);
+          const lossRate = stat.votes ? Math.round((stat.weightedLoss / stat.votes) * 100) : 0;
+          const level = lossRate >= 70 && stat.appearances >= 2 ? "review" : lossRate >= 45 ? "watch" : "stable";
+          return { item, ...stat, lossRate, level };
+        })
+        .filter(signal => signal.item)
+        .sort((a, b) => b.lossRate - a.lossRate || b.appearances - a.appearances)
+        .slice(0, 5);
+    }
+
+    function renderSignals() {
+      const list = byId("signals-list");
+      list.innerHTML = "";
+      const signals = analyzeMarketSignals();
+      const reviewCount = signals.filter(signal => signal.level === "review").length;
+      byId("today-signal-count").textContent = `${reviewCount} ${t("review")}`;
+
+      signals.forEach(signal => {
+        const row = document.createElement("article");
+        row.className = "row value-row";
+        const levelText = signal.level === "review" ? t("review") : signal.level === "watch" ? t("watch") : t("stable");
+        const levelClass = signal.level === "review" ? "loss-tag" : signal.level === "watch" ? "fair-tag" : "win-tag";
+        row.innerHTML = `
+          <span class="token">${itemIcon(signal.item)}</span>
+          <div>
+            <h3 class="name">${signal.item.name}</h3>
+            <p class="meta">${t("loss_rate")}: ${signal.lossRate}% | ${signal.appearances} trades</p>
+          </div>
+          <span class="post-tag ${levelClass}">${levelText}</span>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    function renderAdminReview() {
+      const list = byId("admin-list");
+      list.innerHTML = "";
+
+      analyzeMarketSignals()
+        .filter(signal => signal.level !== "stable")
+        .forEach(signal => {
+          const row = document.createElement("article");
+          row.className = "panel pad";
+          row.innerHTML = `
+            <div class="box-head">
+              <div>
+                <h3>${signal.item.name}</h3>
+                <p class="meta">${t("current_value")}: ${formatValue(signal.item.value)} | ${t("loss_rate")}: ${signal.lossRate}%</p>
+              </div>
+              <span class="post-tag ${signal.level === "review" ? "loss-tag" : "fair-tag"}">${signal.level === "review" ? t("review") : t("watch")}</span>
+            </div>
+            <div class="adjust">
+              <input class="input" type="number" min="0" step="50" value="${signal.item.value}" aria-label="${t("new_value")}" />
+              <button class="btn">${t("update_value")}</button>
+            </div>
+          `;
+          row.querySelector("button").addEventListener("click", () => {
+            const input = row.querySelector("input");
+            const nextValue = Number(input.value);
+            if (!Number.isFinite(nextValue) || nextValue < 0) return;
+            signal.item.value = Math.round(nextValue);
+            state.my.forEach(item => {
+              if (item.id === signal.item.id) item.value = signal.item.value;
+            });
+            state.their.forEach(item => {
+              if (item.id === signal.item.id) item.value = signal.item.value;
+            });
+            renderTrade();
+            renderValues();
+            renderTradeFeed();
+            renderSignals();
+            renderAdminReview();
+            showToast(t("value_updated"));
+          });
+          list.appendChild(row);
+        });
+
+      if (!list.children.length) {
+        list.innerHTML = `<div class="empty">${t("stable")}</div>`;
+      }
+    }
+
+    function addIntel(entry) {
+      const normalized = {
+        id: `intel-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        createdAt: new Date().toISOString(),
+        type: entry.type,
+        target: entry.target,
+        value: entry.value,
+        note: entry.note
+      };
+      state.intelQueue.unshift(normalized);
+      setSavedIntel(state.intelQueue);
+      renderIntelQueue();
+      showToast(t("intel_saved"));
+    }
+
+    function submitIntelForm() {
+      const type = byId("intel-type").value;
+      const target = byId("intel-target").value.trim();
+      const value = byId("intel-value").value.trim();
+      const note = byId("intel-note").value.trim();
+
+      if (!target) {
+        showToast(t("intel_target"));
+        return;
+      }
+
+      addIntel({ type, target, value, note });
+      byId("intel-target").value = "";
+      byId("intel-value").value = "";
+      byId("intel-note").value = "";
+    }
+
+    function renderIntelQueue() {
+      const list = byId("intel-queue");
+      if (!list) return;
+      list.innerHTML = "";
+
+      if (!state.intelQueue.length) {
+        list.innerHTML = `<div class="empty">${t("no_intel")}</div>`;
+        return;
+      }
+
+      state.intelQueue.slice(0, 12).forEach(entry => {
+        const row = document.createElement("article");
+        row.className = "panel pad";
+        row.innerHTML = `
+          <div class="box-head">
+            <div>
+              <h3>${entry.target}</h3>
+              <p class="meta">${entry.type} | ${entry.value || "-"}</p>
+              <p class="meta">${entry.note || "-"}</p>
+            </div>
+            <span class="pill">${new Date(entry.createdAt).toLocaleDateString("en-US")}</span>
+          </div>
+        `;
+        list.appendChild(row);
+      });
+    }
+
+    function shareUrl() {
+      const params = new URLSearchParams();
+      params.set("my", state.my.map(item => item.id).join(","));
+      params.set("their", state.their.map(item => item.id).join(","));
+      params.set("lang", state.lang);
+      return `${location.origin}${location.pathname}?${params.toString()}#calculator`;
+    }
+
+    function tradeText() {
+      const my = state.my.map(item => item.name).join(", ") || "-";
+      const their = state.their.map(item => item.name).join(", ") || "-";
+      const myTotal = total("my");
+      const theirTotal = total("their");
+      return `Grow a Garden W/F/L: ${my} (${formatValue(myTotal)}) vs ${their} (${formatValue(theirTotal)}) = ${outcome(myTotal, theirTotal)}`;
+    }
+
+    async function copyText(text, message) {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(message);
+      } catch {
+        showToast(t("copy_blocked"));
+      }
+    }
+
+    function loadFromUrl() {
+      const params = new URLSearchParams(location.search);
+      const urlLang = params.get("lang");
+      if (translations[urlLang]) state.lang = urlLang;
+      ["my", "their"].forEach(side => {
+        const ids = (params.get(side) || "").split(",").filter(Boolean);
+        state[side] = ids
+          .map(id => itemDatabase.find(item => item.id === id))
+          .filter(Boolean)
+          .map(item => ({ ...item, uid: uid() }));
+      });
+    }
+
+    function changeLanguage(event) {
+      state.lang = event.target.value;
+      setSavedLang(state.lang);
+      applyLanguage();
+    }
+
+    function changeTheme(event) {
+      state.theme = event.target.value;
+      setSavedTheme(state.theme);
+      applyTheme();
+    }
+
+    function changeAdminMode(event) {
+      state.adminMode = event.target.checked;
+      setSavedAdminMode(state.adminMode);
+      applyTheme();
+    }
+
+    byId("lang").addEventListener("change", changeLanguage);
+    byId("lang").addEventListener("input", changeLanguage);
+    byId("theme").addEventListener("change", changeTheme);
+    byId("theme").addEventListener("input", changeTheme);
+    byId("admin-mode").addEventListener("change", changeAdminMode);
+    byId("add-my").addEventListener("click", () => openModal("my"));
+    byId("add-their").addEventListener("click", () => openModal("their"));
+    byId("close-modal").addEventListener("click", closeModal);
+    byId("item-search").addEventListener("input", renderItemOptions);
+    byId("item-modal").addEventListener("click", event => {
+      if (event.target.id === "item-modal") closeModal();
+    });
+    byId("value-search").addEventListener("input", renderValues);
+    byId("sort-values").addEventListener("click", () => {
+      state.sortHigh = !state.sortHigh;
+      byId("sort-values").textContent = state.sortHigh ? t("sort_high") : t("sort_low");
+      renderValues();
+    });
+    byId("copy-share").addEventListener("click", () => copyText(shareUrl(), t("copied_link")));
+    byId("post-trade").addEventListener("click", postCurrentTrade);
+    byId("submit-intel").addEventListener("click", submitIntelForm);
+    byId("copy-result").addEventListener("click", () => copyText(tradeText(), t("copied_text")));
+    byId("clear-trade").addEventListener("click", () => {
+      state.my = [];
+      state.their = [];
+      renderTrade();
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeModal();
+    });
+
+    async function initApp() {
+      await loadDataFiles();
+      loadFromUrl();
+      applyTheme();
+      applyLanguage();
+    }
+
+    initApp();
+  </script>
+</body>
+</html>
