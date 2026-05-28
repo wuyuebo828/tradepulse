@@ -285,6 +285,23 @@
       margin-top: 10px;
     }
 
+    .ad-slot {
+      display: none;
+      min-height: 90px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--muted);
+      place-items: center;
+      margin: 10px 0;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    body.ads-on .ad-slot {
+      display: grid;
+    }
+
     .section {
       padding: 14px 0;
     }
@@ -342,6 +359,29 @@
       text-align: center;
       font-size: 13px;
       padding: 10px;
+    }
+
+    .empty-add {
+      width: 100%;
+      cursor: pointer;
+      background: rgba(67, 214, 174, 0.04);
+    }
+
+    .empty-add:hover,
+    .empty-add:focus {
+      border-color: var(--accent);
+      color: var(--text);
+      background: rgba(67, 214, 174, 0.09);
+      outline: 0;
+    }
+
+    body[data-theme="clean"] .empty-add {
+      background: #fbfcfd;
+    }
+
+    body[data-theme="clean"] .empty-add:hover,
+    body[data-theme="clean"] .empty-add:focus {
+      background: #fff5f4;
     }
 
     .row {
@@ -440,6 +480,37 @@
       display: block;
       margin-top: 3px;
       font-size: 20px;
+    }
+
+    .roast-banner {
+      display: none;
+      border-radius: 8px;
+      margin-top: 10px;
+      padding: 12px;
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .roast-banner.show {
+      display: block;
+    }
+
+    .roast-banner.loss {
+      border: 1px solid color-mix(in srgb, var(--bad) 35%, transparent);
+      background: color-mix(in srgb, var(--bad) 12%, transparent);
+      color: var(--bad);
+    }
+
+    .roast-banner.win {
+      border: 1px solid color-mix(in srgb, var(--good) 35%, transparent);
+      background: color-mix(in srgb, var(--good) 12%, transparent);
+      color: var(--good);
+    }
+
+    .roast-banner.fair {
+      border: 1px solid color-mix(in srgb, var(--warn) 35%, transparent);
+      background: color-mix(in srgb, var(--warn) 12%, transparent);
+      color: var(--warn);
     }
 
     .win { color: var(--good); }
@@ -607,6 +678,82 @@
       margin-top: 10px;
     }
 
+    .feed-note {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .feed-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .feed-tab {
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--muted);
+      font-weight: 900;
+    }
+
+    .feed-tab.active {
+      border-color: var(--accent);
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px var(--accent);
+    }
+
+    .trade-card {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 260ms ease, transform 260ms ease;
+    }
+
+    .trade-card.resolving {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    .trade-card.legendary {
+      border-color: #d6a21e;
+      box-shadow: 0 0 0 1px rgba(214, 162, 30, 0.55), 0 0 22px rgba(214, 162, 30, 0.18);
+    }
+
+    .trade-card.settled-fair {
+      opacity: 0.78;
+    }
+
+    .decided-sort {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .decided-sort.show {
+      display: grid;
+    }
+
+    .sort-tab {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .sort-tab.active {
+      border-color: var(--accent);
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px var(--accent);
+    }
+
     .comment-box {
       display: none;
       margin-top: 8px;
@@ -716,6 +863,62 @@
     @media (max-width: 760px) {
       .wrap { width: min(100% - 18px, 960px); }
       .top-inner { min-height: 54px; }
+      main {
+        display: flex;
+        flex-direction: column;
+      }
+      #calculator {
+        order: -1;
+        padding-top: 8px;
+      }
+      #calculator .section-head {
+        margin-bottom: 8px;
+      }
+      #calculator .section-head .sub {
+        display: none;
+      }
+      #calculator > .panel > .trade-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      #calculator .trade-box {
+        min-height: 112px;
+      }
+      #calculator .box-head {
+        align-items: start;
+        gap: 8px;
+      }
+      #calculator .icon-btn {
+        width: 34px;
+        min-height: 34px;
+      }
+      #calculator .summary {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+      }
+      #calculator .cell {
+        min-height: 58px;
+        padding: 8px 6px;
+      }
+      #calculator .cell strong {
+        font-size: 14px;
+      }
+      #calculator .btn-row {
+        grid-template-columns: 1fr 1fr;
+      }
+      .hero {
+        order: 1;
+        padding: 6px 0 4px;
+      }
+      .hero h1 {
+        font-size: 20px;
+        line-height: 1.15;
+      }
+      .hero .lead,
+      .hero .quick,
+      .hero .today-strip,
+      .hero .notice {
+        display: none;
+      }
         .quick,
         .today-strip,
         .trade-grid,
@@ -763,6 +966,9 @@
       .community-feed {
         max-height: 720px;
         padding-bottom: 92px;
+      }
+      .ad-slot {
+        min-height: 110px;
       }
     }
 
@@ -812,6 +1018,7 @@
     </div>
     <nav class="wrap nav" aria-label="Sections">
       <a href="#calculator" data-i18n="nav_calc">Calculator</a>
+      <a href="#profile" data-i18n="nav_profile">Profile</a>
       <a href="#values" data-i18n="nav_values">Values</a>
       <a href="#market" data-i18n="nav_market">Community</a>
       <a href="#signals" data-i18n="nav_signals">Signals</a>
@@ -884,6 +1091,7 @@
           <div class="cell"><span class="meta" data-i18n="their_total">Their Total</span><strong id="score-their">0</strong></div>
           <div class="cell"><span class="meta" data-i18n="result">Result</span><strong id="score-result">F</strong></div>
         </div>
+        <div class="roast-banner" id="roast-banner"></div>
 
         <div class="btn-row">
           <button class="btn primary" id="copy-share" data-i18n="copy_link">Copy Share Link</button>
@@ -900,7 +1108,40 @@
         <h2 data-i18n="market_title">Community Trades</h2>
         <p class="sub" data-i18n="market_sub">The Flex & Roast Board. Like, comment and vote on other players' past trades.</p>
       </div>
+      <div class="feed-note">
+        <span class="pill" data-i18n="feed_limit">Showing top 20</span>
+        <span class="pill" data-i18n="feed_logic">Pending trades shuffle on each page load</span>
+      </div>
+      <div class="feed-tabs" role="tablist" aria-label="Community trade filters">
+        <button class="feed-tab active" id="tab-needs" data-feed-tab="needs" data-i18n="tab_needs">Needs Vote</button>
+        <button class="feed-tab" id="tab-decided" data-feed-tab="decided" data-i18n="tab_decided">Decided</button>
+      </div>
+      <div class="decided-sort" id="decided-sort">
+        <button class="sort-tab active" data-decided-sort="recent" data-i18n="sort_recent">Recent</button>
+        <button class="sort-tab" data-decided-sort="top" data-i18n="sort_top">Top All-Time</button>
+      </div>
       <div class="community-feed" id="trade-feed"></div>
+    </section>
+
+    <section class="wrap section" id="profile">
+      <div class="section-head">
+        <h2 data-i18n="profile_title">Trade Profile</h2>
+        <p class="sub" data-i18n="profile_sub">A lightweight player trade page for recent and hot trades.</p>
+      </div>
+      <div class="panel pad">
+        <div class="box-head">
+          <div>
+            <h3 id="profile-name">TradePulse Trader</h3>
+            <p class="meta" id="profile-stats">0 trades | 0 votes</p>
+          </div>
+          <button class="btn primary" id="copy-profile" data-i18n="copy_profile">Copy Profile Link</button>
+        </div>
+        <div class="feed-note">
+          <span class="pill" data-i18n="profile_recent">Recent trades</span>
+          <span class="pill" data-i18n="profile_hot">Hot trades stay visible</span>
+        </div>
+        <div class="community-feed" id="profile-feed"></div>
+      </div>
     </section>
 
     <section class="wrap section" id="values">
@@ -913,6 +1154,7 @@
         <button class="btn" id="sort-values" data-i18n="sort_high">High Value</button>
       </div>
       <div class="value-list" id="value-list"></div>
+      <div class="ad-slot" data-ad-slot="values-bottom">Ad</div>
     </section>
 
     <section class="wrap section" id="signals">
@@ -964,6 +1206,7 @@
         <p class="sub" data-i18n="codes_sub">Codes can expire without notice. Last checked: May 27, 2026.</p>
       </div>
       <div class="code-list" id="codes-list"></div>
+      <div class="ad-slot" data-ad-slot="codes-bottom">Ad</div>
     </section>
 
     <section class="wrap section" id="updates">
@@ -1006,7 +1249,7 @@
   <script>
     const translations = {
       en: {
-        nav_calc: "Calculator", nav_values: "Values", nav_market: "Community", nav_signals: "Signals", nav_intel: "Submit", nav_codes: "Codes", nav_updates: "Updates",
+        nav_calc: "Calculator", nav_profile: "Profile", nav_values: "Values", nav_market: "Community", nav_signals: "Signals", nav_intel: "Submit", nav_codes: "Codes", nav_updates: "Updates",
         hero_title: "TradePulse tracks Grow a Garden values, codes and W/F/L checks.",
         hero_lead: "A lightweight Roblox tool for mobile players. Check values, copy codes and share trades for community votes.",
         quick_calc_title: "Trade Check", quick_calc_sub: "Build a W/F/L trade",
@@ -1023,12 +1266,12 @@
         codes_title: "Codes", codes_sub: "Codes can expire without notice. Last checked: May 27, 2026.",
         updates_title: "Updates", updates_sub: "Short notes for value checks, code checks and events.",
         footer: "TradePulse is an unofficial fan-made tool. Not affiliated with Roblox or Grow a Garden. Never enter your Roblox password on third-party sites.",
-        add_item: "Add Item", no_items: "Tap + to add an item", no_found: "No items found",
+        add_item: "Add Item", no_items: "Tap here to add an item", no_found: "No items found",
         copied_link: "Share link copied", copied_text: "Result copied", copied_code: "Code copied", copy_blocked: "Copy blocked by browser",
-        value: "Sheckles Value", demand: "Demand", trend: "Trend", copy: "Copy", like: "Like", comment: "Comment", comment_placeholder: "Add a quick roast or advice...", post_trade: "Post to Community", posted_trade: "Trade posted to Community", add_items_first: "Add items to both sides first", signals_title: "Market Signals", signals_sub: "Early anti-manipulation alerts from community votes. Final value changes should still be reviewed by an admin.", review: "Review", watch: "Watch", stable: "Stable", loss_rate: "Loss rate", signals_queue: "Signal Queue", admin_review: "Admin Review", current_value: "Current", new_value: "New value", update_value: "Update", value_updated: "Value updated", updated: "Updated", confidence: "Confidence", checked: "Checked", data_notice: "Values are community estimates for testing and can change quickly. Verify codes in game before publishing them as active.", report: "Report", works: "Works", expired: "Expired", intel_title: "Submit Intel", intel_sub: "Players can report price changes, new items, or code updates. Admins review submissions before anything becomes official.", intel_price: "Price change", intel_item: "New item", intel_code: "Code update", intel_target: "Item or code name", intel_value: "Suggested value or reward", intel_note: "Short note, source, or proof link", submit_intel: "Submit for Review", intel_saved: "Submitted for admin review", admin_queue: "Player Intel Queue", no_intel: "No player intel yet"
+        value: "Sheckles Value", demand: "Demand", trend: "Trend", copy: "Copy", like: "Like", comment: "Comment", comment_placeholder: "Add a quick roast or advice...", post_trade: "Post to Community", posted_trade: "Trade posted to Community", add_items_first: "Add items to both sides first", signals_title: "Market Signals", signals_sub: "Early anti-manipulation alerts from community votes. Final value changes should still be reviewed by an admin.", review: "Review", watch: "Watch", stable: "Stable", loss_rate: "Loss rate", signals_queue: "Signal Queue", admin_review: "Admin Review", current_value: "Current", new_value: "New value", update_value: "Update", value_updated: "Value updated", updated: "Updated", confidence: "Confidence", checked: "Checked", data_notice: "Values are community estimates for testing and can change quickly. Verify codes in game before publishing them as active.", report: "Report", works: "Works", expired: "Expired", intel_title: "Submit Intel", intel_sub: "Players can report price changes, new items, or code updates. Admins review submissions before anything becomes official.", intel_price: "Price change", intel_item: "New item", intel_code: "Code update", intel_target: "Item or code name", intel_value: "Suggested value or reward", intel_note: "Short note, source, or proof link", submit_intel: "Submit for Review", intel_saved: "Submitted for admin review", admin_queue: "Player Intel Queue", no_intel: "No player intel yet", feed_limit: "Showing top 20", feed_logic: "Pending trades shuffle on each page load", tab_needs: "Needs Vote", tab_decided: "Decided", sort_recent: "Recent", sort_top: "Top All-Time", needs_votes: "Needs Votes", high_value: "High Value", hot: "Hot", resolved: "Resolved", final_badge: "Final Badge", profile_title: "Trade Profile", profile_sub: "A lightweight player trade page for recent and hot trades.", copy_profile: "Copy Profile Link", profile_recent: "Recent trades", profile_hot: "Hot trades stay visible", no_profile_trades: "Post trades from the calculator to build your profile.", copied_profile: "Profile link copied"
       },
       pt: {
-        nav_calc: "Calculadora", nav_values: "Valores", nav_market: "Comunidade", nav_signals: "Sinais", nav_intel: "Enviar", nav_codes: "Codigos", nav_updates: "Updates",
+        nav_calc: "Calculadora", nav_profile: "Perfil", nav_values: "Valores", nav_market: "Comunidade", nav_signals: "Sinais", nav_intel: "Enviar", nav_codes: "Codigos", nav_updates: "Updates",
         hero_title: "TradePulse acompanha valores, codigos e W/F/L de Grow a Garden.",
         hero_lead: "Uma ferramenta Roblox leve para celular. Veja valores, copie codigos e compartilhe trocas para votos da comunidade.",
         quick_calc_title: "Checar troca", quick_calc_sub: "Monte uma troca W/F/L",
@@ -1045,12 +1288,12 @@
         codes_title: "Codigos", codes_sub: "Codigos podem expirar sem aviso. Checado em: 27 de maio de 2026.",
         updates_title: "Updates", updates_sub: "Notas curtas sobre valores, codigos e eventos.",
         footer: "TradePulse e uma ferramenta nao oficial de fas. Sem afiliacao com Roblox ou Grow a Garden. Nunca digite sua senha Roblox em sites de terceiros.",
-        add_item: "Adicionar item", no_items: "Toque + para adicionar", no_found: "Nenhum item encontrado",
+        add_item: "Adicionar item", no_items: "Toque aqui para adicionar", no_found: "Nenhum item encontrado",
         copied_link: "Link copiado", copied_text: "Texto copiado", copied_code: "Codigo copiado", copy_blocked: "Copia bloqueada pelo navegador",
-        value: "Valor em Sheckles", demand: "Demanda", trend: "Tendencia", copy: "Copiar", like: "Curtir", comment: "Comentar", comment_placeholder: "Adicione um roast ou conselho...", post_trade: "Postar na comunidade", posted_trade: "Troca postada na comunidade", add_items_first: "Adicione itens dos dois lados primeiro", signals_title: "Sinais de mercado", signals_sub: "Alertas iniciais anti-manipulacao vindos dos votos da comunidade. Mudancas finais ainda precisam de revisao de admin.", review: "Revisar", watch: "Observar", stable: "Estavel", loss_rate: "Taxa de perda", signals_queue: "Fila de sinais", admin_review: "Revisao admin", current_value: "Atual", new_value: "Novo valor", update_value: "Atualizar", value_updated: "Valor atualizado", updated: "Atualizado", confidence: "Confianca", checked: "Checado", data_notice: "Valores sao estimativas da comunidade para teste e podem mudar rapido. Verifique codigos no jogo antes de publicar como ativos.", report: "Reportar", works: "Funciona", expired: "Expirou", intel_title: "Enviar intel", intel_sub: "Jogadores podem reportar mudancas de preco, novos itens ou codigos. Admins revisam antes de virar oficial.", intel_price: "Mudanca de preco", intel_item: "Novo item", intel_code: "Atualizacao de codigo", intel_target: "Nome do item ou codigo", intel_value: "Valor ou recompensa sugerida", intel_note: "Nota curta, fonte ou prova", submit_intel: "Enviar para revisao", intel_saved: "Enviado para revisao admin", admin_queue: "Fila de intel", no_intel: "Sem intel ainda"
+        value: "Valor em Sheckles", demand: "Demanda", trend: "Tendencia", copy: "Copiar", like: "Curtir", comment: "Comentar", comment_placeholder: "Adicione um roast ou conselho...", post_trade: "Postar na comunidade", posted_trade: "Troca postada na comunidade", add_items_first: "Adicione itens dos dois lados primeiro", signals_title: "Sinais de mercado", signals_sub: "Alertas iniciais anti-manipulacao vindos dos votos da comunidade. Mudancas finais ainda precisam de revisao de admin.", review: "Revisar", watch: "Observar", stable: "Estavel", loss_rate: "Taxa de perda", signals_queue: "Fila de sinais", admin_review: "Revisao admin", current_value: "Atual", new_value: "Novo valor", update_value: "Atualizar", value_updated: "Valor atualizado", updated: "Atualizado", confidence: "Confianca", checked: "Checado", data_notice: "Valores sao estimativas da comunidade para teste e podem mudar rapido. Verifique codigos no jogo antes de publicar como ativos.", report: "Reportar", works: "Funciona", expired: "Expirou", intel_title: "Enviar intel", intel_sub: "Jogadores podem reportar mudancas de preco, novos itens ou codigos. Admins revisam antes de virar oficial.", intel_price: "Mudanca de preco", intel_item: "Novo item", intel_code: "Atualizacao de codigo", intel_target: "Nome do item ou codigo", intel_value: "Valor ou recompensa sugerida", intel_note: "Nota curta, fonte ou prova", submit_intel: "Enviar para revisao", intel_saved: "Enviado para revisao admin", admin_queue: "Fila de intel", no_intel: "Sem intel ainda", tab_needs: "Precisa de votos", tab_decided: "Decidido", sort_recent: "Recentes", sort_top: "Top historico", profile_title: "Perfil de trades", profile_sub: "Pagina leve com trades recentes e populares.", copy_profile: "Copiar link do perfil", profile_recent: "Trades recentes", profile_hot: "Trades quentes ficam visiveis", no_profile_trades: "Poste trades da calculadora para criar seu perfil.", copied_profile: "Link do perfil copiado"
       },
       id: {
-        nav_calc: "Kalkulator", nav_values: "Nilai", nav_market: "Komunitas", nav_signals: "Sinyal", nav_intel: "Kirim", nav_codes: "Kode", nav_updates: "Update",
+        nav_calc: "Kalkulator", nav_profile: "Profil", nav_values: "Nilai", nav_market: "Komunitas", nav_signals: "Sinyal", nav_intel: "Kirim", nav_codes: "Kode", nav_updates: "Update",
         hero_title: "TradePulse melacak nilai, kode, dan cek W/F/L Grow a Garden.",
         hero_lead: "Tool Roblox ringan untuk pemain mobile. Cek nilai, salin kode, dan bagikan trade untuk vote komunitas.",
         quick_calc_title: "Cek Trade", quick_calc_sub: "Buat trade W/F/L",
@@ -1067,9 +1310,9 @@
         codes_title: "Kode", codes_sub: "Kode bisa kedaluwarsa tanpa pemberitahuan. Dicek: 27 Mei 2026.",
         updates_title: "Update", updates_sub: "Catatan singkat untuk cek nilai, kode, dan event.",
         footer: "TradePulse adalah tool fan-made tidak resmi. Tidak terafiliasi dengan Roblox atau Grow a Garden. Jangan pernah masukkan password Roblox di situs pihak ketiga.",
-        add_item: "Tambah Item", no_items: "Tap + untuk tambah item", no_found: "Item tidak ditemukan",
+        add_item: "Tambah Item", no_items: "Tap di sini untuk tambah item", no_found: "Item tidak ditemukan",
         copied_link: "Link disalin", copied_text: "Teks disalin", copied_code: "Kode disalin", copy_blocked: "Salin diblokir browser",
-        value: "Nilai Sheckles", demand: "Demand", trend: "Tren", copy: "Salin", like: "Like", comment: "Komentar", comment_placeholder: "Tulis roast atau saran singkat...", post_trade: "Post ke Komunitas", posted_trade: "Trade diposting ke komunitas", add_items_first: "Tambahkan item di kedua sisi dulu", signals_title: "Sinyal Market", signals_sub: "Alert awal anti-manipulasi dari vote komunitas. Perubahan nilai final tetap perlu dicek admin.", review: "Review", watch: "Pantau", stable: "Stabil", loss_rate: "Rate loss", signals_queue: "Antrean Sinyal", admin_review: "Review Admin", current_value: "Saat ini", new_value: "Nilai baru", update_value: "Update", value_updated: "Nilai diupdate", updated: "Diupdate", confidence: "Keyakinan", checked: "Dicek", data_notice: "Nilai adalah estimasi komunitas untuk tes dan bisa berubah cepat. Verifikasi kode di game sebelum dipublikasikan aktif.", report: "Report", works: "Works", expired: "Expired", intel_title: "Kirim Intel", intel_sub: "Pemain bisa report perubahan harga, item baru, atau update kode. Admin review sebelum jadi resmi.", intel_price: "Perubahan harga", intel_item: "Item baru", intel_code: "Update kode", intel_target: "Nama item atau kode", intel_value: "Nilai atau reward saran", intel_note: "Catatan, sumber, atau bukti", submit_intel: "Kirim untuk Review", intel_saved: "Dikirim untuk review admin", admin_queue: "Antrean Intel", no_intel: "Belum ada intel"
+        value: "Nilai Sheckles", demand: "Demand", trend: "Tren", copy: "Salin", like: "Like", comment: "Komentar", comment_placeholder: "Tulis roast atau saran singkat...", post_trade: "Post ke Komunitas", posted_trade: "Trade diposting ke komunitas", add_items_first: "Tambahkan item di kedua sisi dulu", signals_title: "Sinyal Market", signals_sub: "Alert awal anti-manipulasi dari vote komunitas. Perubahan nilai final tetap perlu dicek admin.", review: "Review", watch: "Pantau", stable: "Stabil", loss_rate: "Rate loss", signals_queue: "Antrean Sinyal", admin_review: "Review Admin", current_value: "Saat ini", new_value: "Nilai baru", update_value: "Update", value_updated: "Nilai diupdate", updated: "Diupdate", confidence: "Keyakinan", checked: "Dicek", data_notice: "Nilai adalah estimasi komunitas untuk tes dan bisa berubah cepat. Verifikasi kode di game sebelum dipublikasikan aktif.", report: "Report", works: "Works", expired: "Expired", intel_title: "Kirim Intel", intel_sub: "Pemain bisa report perubahan harga, item baru, atau update kode. Admin review sebelum jadi resmi.", intel_price: "Perubahan harga", intel_item: "Item baru", intel_code: "Update kode", intel_target: "Nama item atau kode", intel_value: "Nilai atau reward saran", intel_note: "Catatan, sumber, atau bukti", submit_intel: "Kirim untuk Review", intel_saved: "Dikirim untuk review admin", admin_queue: "Antrean Intel", no_intel: "Belum ada intel", tab_needs: "Butuh Vote", tab_decided: "Diputuskan", sort_recent: "Terbaru", sort_top: "Top sepanjang masa", profile_title: "Profil Trade", profile_sub: "Halaman ringan untuk trade terbaru dan populer.", copy_profile: "Salin Link Profil", profile_recent: "Trade terbaru", profile_hot: "Trade hot tetap terlihat", no_profile_trades: "Post trade dari kalkulator untuk membuat profil.", copied_profile: "Link profil disalin"
       }
     };
 
@@ -1207,6 +1450,47 @@
       }
     }
 
+    function encodeProfileTrades(trades) {
+      const compact = trades.slice(0, 6).map(trade => ({
+        id: trade.id,
+        createdAt: trade.createdAt,
+        tag: trade.tag,
+        title: trade.title,
+        note: trade.note,
+        my: trade.my,
+        their: trade.their,
+        likes: trade.likes || 0,
+        votes: trade.votes || { W: 0, F: 0, L: 0 }
+      }));
+      return btoa(unescape(encodeURIComponent(JSON.stringify(compact))));
+    }
+
+    function decodeProfileTrades(value) {
+      try {
+        const parsed = JSON.parse(decodeURIComponent(escape(atob(value || ""))));
+        if (!Array.isArray(parsed)) return [];
+        return parsed
+          .filter(trade => Array.isArray(trade.my) && Array.isArray(trade.their))
+          .slice(0, 6)
+          .map((trade, index) => ({
+            id: `profile-${trade.id || index}`,
+            owner: "Shared Profile",
+            profilePost: true,
+            createdAt: trade.createdAt || new Date().toISOString(),
+            tag: trade.tag || "F",
+            title: trade.title || "Profile trade",
+            note: trade.note || "A recent trade from this player's shared profile.",
+            my: trade.my,
+            their: trade.their,
+            likes: Number(trade.likes) || 0,
+            commentsOpen: false,
+            votes: trade.votes || { W: 0, F: 0, L: 0 }
+          }));
+      } catch {
+        return [];
+      }
+    }
+
     function getSavedIntel() {
       try {
         const saved = JSON.parse(localStorage.getItem("tradePulseIntelQueue") || localStorage.getItem("growToolsIntelQueue") || "[]");
@@ -1246,6 +1530,7 @@
       codeDatabase = codes;
       updateDatabase = updates;
       tradeFeed = [...getSavedTrades(), ...trades];
+      seedFeedShuffle();
     }
 
     const state = {
@@ -1254,6 +1539,10 @@
       activeSide: "my",
       votes: { W: 47, F: 31, L: 22 },
       sortHigh: true,
+      feedTab: "needs",
+      decidedSort: "recent",
+      feedShuffle: new Map(),
+      sharedProfileTrades: [],
       lang: getSavedLang(),
       theme: getSavedTheme(),
       adminMode: getSavedAdminMode(),
@@ -1266,6 +1555,10 @@
     const formatValue = value => `${money.format(value)} Sheckles`;
     const uid = () => window.crypto && crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
     const itemIcon = item => item.icon ? `<img src="${item.icon}" alt="" loading="lazy" />` : item.short;
+
+    function seedFeedShuffle() {
+      state.feedShuffle = new Map(tradeFeed.map(trade => [trade.id, Math.random()]));
+    }
 
     function applyLanguage() {
       document.documentElement.lang = state.lang;
@@ -1282,6 +1575,7 @@
       renderCodes();
       renderUpdates();
       renderTradeFeed();
+      renderProfile();
       renderSignals();
       renderAdminReview();
       renderIntelQueue();
@@ -1340,11 +1634,31 @@
       return result === "W" ? "win" : result === "L" ? "lose" : "fair";
     }
 
+    function tradeMood(myTotal, theirTotal, votes) {
+      const base = Math.max(myTotal, theirTotal, 1);
+      const diffRatio = Math.abs(theirTotal - myTotal) / base;
+      const lossRate = votes ? votes.L / Math.max(votes.W + votes.F + votes.L, 1) : 0;
+
+      if (votes && lossRate >= 0.8) return { label: "Public Roast: Donation Mode", tone: "loss", badge: "Roast Magnet" };
+      if (votes && lossRate >= 0.6) return { label: "Community says: Big L Energy", tone: "loss", badge: "Risky Trader" };
+      if (theirTotal < myTotal && diffRatio >= 0.65) return { label: "Massive L: Donation Mode", tone: "loss", badge: "Roast Magnet" };
+      if (theirTotal < myTotal && diffRatio >= 0.35) return { label: "Overpay Alert: Big L Energy", tone: "loss", badge: "Risky Trader" };
+      if (theirTotal < myTotal) return { label: "Small L: Check twice", tone: "loss", badge: "Careful Trader" };
+      if (theirTotal > myTotal && diffRatio >= 0.45) return { label: "Huge W: Certified Snipe", tone: "win", badge: "Value Hunter" };
+      if (theirTotal > myTotal) return { label: "W: Nice catch", tone: "win", badge: "Good Eye" };
+      return { label: "Fair-ish: Let the comments decide", tone: "fair", badge: "Fair Dealer" };
+    }
+
     function renderOffer(side) {
       const list = byId(`${side}-list`);
       list.innerHTML = "";
       if (!state[side].length) {
-        list.innerHTML = `<div class="empty">${t("no_items")}</div>`;
+        const addButton = document.createElement("button");
+        addButton.type = "button";
+        addButton.className = "empty empty-add";
+        addButton.textContent = t("no_items");
+        addButton.addEventListener("click", () => openModal(side));
+        list.appendChild(addButton);
         return;
       }
       state[side].forEach(item => {
@@ -1380,6 +1694,10 @@
       byId("score-diff").className = outcomeClass(result);
       byId("score-result").textContent = result;
       byId("score-result").className = outcomeClass(result);
+      const mood = tradeMood(myTotal, theirTotal);
+      const banner = byId("roast-banner");
+      banner.textContent = mood.label;
+      banner.className = `roast-banner show ${mood.tone}`;
     }
 
     function renderItemOptions() {
@@ -1505,27 +1823,116 @@
       }).join("");
     }
 
+    function tradeStats(trade) {
+      const myItems = trade.my.map(id => itemDatabase.find(item => item.id === id)).filter(Boolean);
+      const theirItems = trade.their.map(id => itemDatabase.find(item => item.id === id)).filter(Boolean);
+      const myTotal = myItems.reduce((sum, item) => sum + item.value, 0);
+      const theirTotal = theirItems.reduce((sum, item) => sum + item.value, 0);
+      const tradeValue = Math.max(myTotal, theirTotal);
+      const diffRatio = Math.abs(theirTotal - myTotal) / Math.max(tradeValue, 1);
+      const votes = trade.votes.W + trade.votes.F + trade.votes.L;
+      const topVote = Math.max(trade.votes.W, trade.votes.F, trade.votes.L);
+      const consensus = votes ? topVote / votes : 0;
+      const fairRate = votes ? trade.votes.F / votes : 0;
+      const highValue = tradeValue >= 6000;
+      const volatile = diffRatio >= 0.3 || [...myItems, ...theirItems].some(item => item.trend === "Up" || item.trend === "Down");
+      const decided = votes >= 20;
+      if (decided && !trade.decidedAt) trade.decidedAt = new Date().toISOString();
+      const resolved = votes >= 50 && consensus >= 0.85;
+      const settledFair = decided && votes >= 30 && fairRate >= 0.7;
+      const needsVotes = votes < 20;
+      const hot = !decided && (trade.likes >= 30 || consensus >= 0.75);
+      const status = decided ? t("resolved") : needsVotes ? t("needs_votes") : highValue || volatile ? t("high_value") : hot ? t("hot") : t("watch");
+      const score =
+        (needsVotes ? 60 : 0) +
+        (highValue ? 35 : 0) +
+        (volatile ? 30 : 0) +
+        (hot ? 20 : 0) +
+        (trade.likes * 0.4) +
+        (votes * 0.2) -
+        (decided ? 80 : 0);
+
+      return { myItems, theirItems, myTotal, theirTotal, tradeValue, votes, consensus, fairRate, highValue, volatile, decided, resolved, settledFair, needsVotes, hot, status, score };
+    }
+
+    function finalCommunityBadge(votes) {
+      const totalVotes = votes.W + votes.F + votes.L;
+      const winRate = totalVotes ? votes.W / totalVotes : 0;
+      const fairRate = totalVotes ? votes.F / totalVotes : 0;
+      const lossRate = totalVotes ? votes.L / totalVotes : 0;
+
+      if (totalVotes > 50 && lossRate > 0.85) return { label: "Legendary L", tone: "loss", legendary: true };
+      if (totalVotes > 50 && winRate > 0.85) return { label: "Legendary W", tone: "win", legendary: true };
+      if (totalVotes >= 30 && fairRate >= 0.7) return { label: "Settled Fair", tone: "fair", settled: true };
+      if (lossRate >= 0.7) return { label: "Massive L", tone: "loss", legendary: false };
+      if (winRate >= 0.7) return { label: "Massive W", tone: "win", legendary: false };
+      if (fairRate >= 0.55) return { label: "Fair Trade", tone: "fair" };
+      if (lossRate > winRate) return { label: "Leaning L", tone: "loss" };
+      if (winRate > lossRate) return { label: "Leaning W", tone: "win" };
+      return { label: "Split Vote", tone: "fair" };
+    }
+
+    function decidedRank(item) {
+      return item.stats.settledFair ? 1 : 0;
+    }
+
     function renderTradeFeed() {
       const list = byId("trade-feed");
       list.innerHTML = "";
+      document.querySelectorAll(".feed-tab").forEach(button => {
+        button.classList.toggle("active", button.dataset.feedTab === state.feedTab);
+      });
+      byId("decided-sort").classList.toggle("show", state.feedTab === "decided");
+      document.querySelectorAll(".sort-tab").forEach(button => {
+        button.classList.toggle("active", button.dataset.decidedSort === state.decidedSort);
+      });
 
-      tradeFeed.forEach(trade => {
-        const myItems = trade.my.map(id => itemDatabase.find(item => item.id === id)).filter(Boolean);
-        const theirItems = trade.their.map(id => itemDatabase.find(item => item.id === id)).filter(Boolean);
-        const myTotal = myItems.reduce((sum, item) => sum + item.value, 0);
-        const theirTotal = theirItems.reduce((sum, item) => sum + item.value, 0);
+      const feedItems = tradeFeed
+        .map((trade, index) => ({ trade, index, stats: tradeStats(trade) }))
+        .filter(item => state.feedTab === "needs" ? !item.stats.decided : item.stats.decided)
+        .sort((a, b) => {
+          if (state.feedTab === "needs") {
+            return (state.feedShuffle.get(a.trade.id) ?? 0) - (state.feedShuffle.get(b.trade.id) ?? 0);
+          }
+          const rankDiff = decidedRank(a) - decidedRank(b);
+          if (rankDiff) return rankDiff;
+          if (state.decidedSort === "top") {
+            return b.stats.votes - a.stats.votes || (Date.parse(b.trade.decidedAt || b.trade.createdAt || "") || b.index) - (Date.parse(a.trade.decidedAt || a.trade.createdAt || "") || a.index);
+          }
+          return (Date.parse(b.trade.decidedAt || b.trade.createdAt || "") || b.index) - (Date.parse(a.trade.decidedAt || a.trade.createdAt || "") || a.index);
+        })
+        .slice(0, 20);
+
+      if (!feedItems.length) {
+        list.innerHTML = `<div class="empty">${state.feedTab === "needs" ? t("needs_votes") : t("resolved")}</div>`;
+        return;
+      }
+
+      feedItems.forEach(({ trade, stats }, index) => {
+        const { myItems, theirItems, myTotal, theirTotal } = stats;
         const result = outcome(myTotal, theirTotal);
         const tagText = trade.tag === "W" ? "W (Win)" : trade.tag === "L" ? "L (Loss)" : "F (Fair)";
         const tagClass = trade.tag === "W" ? "win-tag" : trade.tag === "L" ? "loss-tag" : "fair-tag";
+        const mood = tradeMood(myTotal, theirTotal, trade.votes);
+        const moodClass = mood.tone === "win" ? "win-tag" : mood.tone === "loss" ? "loss-tag" : "fair-tag";
+        const finalBadge = finalCommunityBadge(trade.votes);
+        const finalClass = finalBadge.tone === "win" ? "win-tag" : finalBadge.tone === "loss" ? "loss-tag" : "fair-tag";
         const card = document.createElement("article");
-        card.className = "panel pad";
+        card.className = `panel pad trade-card ${finalBadge.legendary ? "legendary" : ""} ${finalBadge.settled ? "settled-fair" : ""}`;
+        card.dataset.tradeId = trade.id;
         card.innerHTML = `
           <div class="box-head">
             <div>
               <h3>${trade.title}</h3>
-              <p class="meta">${trade.owner}'s trade | ${formatValue(myTotal)} vs ${formatValue(theirTotal)} | Auto ${result}</p>
+              <p class="meta">${trade.owner}'s trade | ${formatValue(myTotal)} vs ${formatValue(theirTotal)} | ${stats.votes}/20 votes</p>
             </div>
-            <span class="post-tag ${tagClass}">${tagText}</span>
+            <span class="post-tag ${stats.decided ? finalClass : tagClass}">${stats.decided && finalBadge.legendary ? (finalBadge.tone === "win" ? "Legendary W" : "Legendary L") : stats.decided ? finalBadge.label : tagText}</span>
+          </div>
+          <div class="btn-row">
+            <span class="pill">${stats.status}</span>
+            <span class="post-tag ${moodClass}">${mood.label}</span>
+            <span class="pill">${mood.badge}</span>
+            ${stats.decided ? `<span class="post-tag ${finalClass}">${t("final_badge")}: ${finalBadge.label}</span>` : ""}
           </div>
           <p class="sub">${trade.note}</p>
           <div class="trade-grid">
@@ -1554,8 +1961,21 @@
         `;
         card.querySelectorAll(".vote").forEach(button => {
           button.addEventListener("click", () => {
+            const beforeVotes = trade.votes.W + trade.votes.F + trade.votes.L;
             trade.votes[button.dataset.vote] += 1;
             setSavedTrades(tradeFeed.filter(item => item.userPost));
+            const afterVotes = trade.votes.W + trade.votes.F + trade.votes.L;
+            if (state.feedTab === "needs" && beforeVotes < 20 && afterVotes >= 20) {
+              trade.decidedAt = new Date().toISOString();
+              setSavedTrades(tradeFeed.filter(item => item.userPost));
+              card.classList.add("resolving");
+              setTimeout(() => {
+                state.feedTab = "decided";
+                renderTradeFeed();
+                renderSignals();
+              }, 280);
+              return;
+            }
             renderTradeFeed();
             renderSignals();
           });
@@ -1571,6 +1991,95 @@
           renderTradeFeed();
         });
         list.appendChild(card);
+
+        if ((index + 1) % 3 === 0) {
+          const ad = document.createElement("div");
+          ad.className = "ad-slot";
+          ad.dataset.adSlot = `community-${index + 1}`;
+          ad.textContent = "Ad";
+          list.appendChild(ad);
+        }
+      });
+    }
+
+    function getProfileTrades() {
+      const source = state.sharedProfileTrades.length
+        ? state.sharedProfileTrades
+        : tradeFeed.filter(trade => trade.userPost);
+      const recent = [...source]
+        .sort((a, b) => Date.parse(b.createdAt || "") - Date.parse(a.createdAt || ""))
+        .slice(0, 4);
+      const hot = [...source]
+        .sort((a, b) => {
+          const aVotes = a.votes.W + a.votes.F + a.votes.L;
+          const bVotes = b.votes.W + b.votes.F + b.votes.L;
+          return (bVotes + b.likes * 2) - (aVotes + a.likes * 2);
+        })
+        .slice(0, 4);
+      return [...recent, ...hot]
+        .filter((trade, index, list) => list.findIndex(item => item.id === trade.id) === index)
+        .slice(0, 6);
+    }
+
+    function profileUrl() {
+      const params = new URLSearchParams();
+      params.set("lang", state.lang);
+      params.set("view", "profile");
+      params.set("p", encodeProfileTrades(getProfileTrades()));
+      return `${location.origin}${location.pathname}?${params.toString()}#profile`;
+    }
+
+    function renderProfile() {
+      const list = byId("profile-feed");
+      if (!list) return;
+      const trades = getProfileTrades();
+      const totalVotes = trades.reduce((sum, trade) => sum + trade.votes.W + trade.votes.F + trade.votes.L, 0);
+      byId("profile-name").textContent = state.sharedProfileTrades.length ? "Shared Trade Profile" : "TradePulse Trader";
+      byId("profile-stats").textContent = `${trades.length} trades | ${totalVotes} votes`;
+      list.innerHTML = "";
+
+      if (!trades.length) {
+        list.innerHTML = `<div class="empty">${t("no_profile_trades")}</div>`;
+        return;
+      }
+
+      trades.forEach(trade => {
+        const stats = tradeStats(trade);
+        const finalBadge = finalCommunityBadge(trade.votes);
+        const finalClass = finalBadge.tone === "win" ? "win-tag" : finalBadge.tone === "loss" ? "loss-tag" : "fair-tag";
+        const myNames = stats.myItems.map(item => item.name).join(", ");
+        const theirNames = stats.theirItems.map(item => item.name).join(", ");
+        const row = document.createElement("article");
+        row.className = `panel pad trade-card ${finalBadge.legendary ? "legendary" : ""} ${finalBadge.settled ? "settled-fair" : ""}`;
+        row.innerHTML = `
+          <div class="box-head">
+            <div>
+              <h3>${trade.title}</h3>
+              <p class="meta">${formatValue(stats.myTotal)} vs ${formatValue(stats.theirTotal)} | ${stats.votes} votes</p>
+            </div>
+            <span class="post-tag ${finalClass}">${finalBadge.label}</span>
+          </div>
+          <div class="trade-grid">
+            <div class="trade-box"><p class="meta">${t("my_offer")}</p><strong>${myNames}</strong></div>
+            <div class="trade-box"><p class="meta">${t("their_offer")}</p><strong>${theirNames}</strong></div>
+          </div>
+          <div class="vote-grid">
+            <button class="vote" data-vote="W">W<br><span>${t("win")}</span></button>
+            <button class="vote" data-vote="F">F<br><span>${t("fair")}</span></button>
+            <button class="vote" data-vote="L">L<br><span>${t("lose")}</span></button>
+          </div>
+          <div class="bars">${renderVoteBars(trade.votes)}</div>
+        `;
+        row.querySelectorAll(".vote").forEach(button => {
+          button.addEventListener("click", () => {
+            trade.votes[button.dataset.vote] += 1;
+            if (trade.userPost) setSavedTrades(tradeFeed.filter(item => item.userPost));
+            renderProfile();
+            renderTradeFeed();
+            renderSignals();
+          });
+        });
+        list.appendChild(row);
       });
     }
 
@@ -1594,6 +2103,7 @@
         id: `trade-${Date.now()}`,
         owner: "You",
         userPost: true,
+        createdAt: new Date().toISOString(),
         tag: result,
         title,
         note,
@@ -1606,6 +2116,7 @@
 
       setSavedTrades(tradeFeed.filter(trade => trade.userPost));
       renderTradeFeed();
+      renderProfile();
       renderSignals();
       renderAdminReview();
       showToast(t("posted_trade"));
@@ -1821,6 +2332,7 @@
           tradeFeed.unshift({
             id: sharedTradeId,
             owner: "Shared Link",
+            createdAt: new Date().toISOString(),
             tag: result,
             title: result === "W" ? "Shared possible W" : result === "L" ? "Shared possible L" : "Shared fair check",
             note: "This trade was opened from a share link. Vote W/F/L or use the calculator to make your own.",
@@ -1830,6 +2342,13 @@
             commentsOpen: false,
             votes: { W: 0, F: 0, L: 0 }
           });
+        }
+      }
+
+      if (params.get("view") === "profile") {
+        state.sharedProfileTrades = decodeProfileTrades(params.get("p"));
+        if (state.sharedProfileTrades.length) {
+          location.hash = "profile";
         }
       }
     }
@@ -1852,11 +2371,27 @@
       applyTheme();
     }
 
+    function changeFeedTab(event) {
+      state.feedTab = event.currentTarget.dataset.feedTab;
+      renderTradeFeed();
+    }
+
+    function changeDecidedSort(event) {
+      state.decidedSort = event.currentTarget.dataset.decidedSort;
+      renderTradeFeed();
+    }
+
     byId("lang").addEventListener("change", changeLanguage);
     byId("lang").addEventListener("input", changeLanguage);
     byId("theme").addEventListener("change", changeTheme);
     byId("theme").addEventListener("input", changeTheme);
     byId("admin-mode").addEventListener("change", changeAdminMode);
+    document.querySelectorAll(".feed-tab").forEach(button => {
+      button.addEventListener("click", changeFeedTab);
+    });
+    document.querySelectorAll(".sort-tab").forEach(button => {
+      button.addEventListener("click", changeDecidedSort);
+    });
     byId("add-my").addEventListener("click", () => openModal("my"));
     byId("add-their").addEventListener("click", () => openModal("their"));
     byId("close-modal").addEventListener("click", closeModal);
@@ -1871,6 +2406,7 @@
       renderValues();
     });
     byId("copy-share").addEventListener("click", () => copyText(shareUrl(), t("copied_link")));
+    byId("copy-profile").addEventListener("click", () => copyText(profileUrl(), t("copied_profile")));
     byId("post-trade").addEventListener("click", postCurrentTrade);
     byId("submit-intel").addEventListener("click", submitIntelForm);
     byId("copy-result").addEventListener("click", () => copyText(tradeText(), t("copied_text")));
