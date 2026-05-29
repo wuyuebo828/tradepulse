@@ -92,7 +92,7 @@
     }
 
     .admin-toggle {
-      display: inline-flex;
+      display: none;
       align-items: center;
       gap: 6px;
       min-height: 38px;
@@ -173,7 +173,7 @@
 
     .bottom-nav-inner {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 6px;
       width: min(720px, 100%);
       margin: 0 auto;
@@ -393,6 +393,128 @@
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.025);
       padding: 8px;
+    }
+
+    .mutation-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .mutation-form {
+      display: grid;
+      gap: 10px;
+    }
+
+    .mutation-field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .mutation-options {
+      display: grid;
+      gap: 10px;
+      max-height: 280px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .mutation-tier {
+      display: grid;
+      gap: 6px;
+    }
+
+    .mutation-tier h4 {
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .mutation-checks,
+    .variant-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .mutation-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 0 10px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .mutation-option input {
+      accent-color: var(--accent);
+    }
+
+    .tier-S { border-color: #d6a21e; color: #d6a21e; }
+    .tier-A { border-color: #f59e0b; color: #f59e0b; }
+    .tier-B { border-color: #3b82f6; color: #3b82f6; }
+    .tier-C { border-color: #22c55e; color: #22c55e; }
+    .tier-D { border-color: #98a2b3; color: var(--muted); }
+
+    .mutation-result {
+      display: grid;
+      gap: 10px;
+    }
+
+    .final-value {
+      font-size: clamp(26px, 6vw, 40px);
+      line-height: 1.05;
+      font-weight: 900;
+    }
+
+    .rating {
+      display: inline-flex;
+      width: fit-content;
+      min-height: 34px;
+      align-items: center;
+      border-radius: 8px;
+      padding: 0 12px;
+      font-weight: 900;
+    }
+
+    .rating-normal { background: rgba(152, 162, 179, 0.16); color: var(--muted); }
+    .rating-rare { background: rgba(59, 130, 246, 0.14); color: #3b82f6; }
+    .rating-epic { background: rgba(147, 51, 234, 0.14); color: #9333ea; }
+    .rating-legendary {
+      background: rgba(214, 162, 30, 0.16);
+      color: #d6a21e;
+      animation: legendaryPulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes legendaryPulse {
+      0%, 100% { box-shadow: 0 0 0 rgba(214, 162, 30, 0); }
+      50% { box-shadow: 0 0 18px rgba(214, 162, 30, 0.35); }
+    }
+
+    .mini-items {
+      display: grid;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .mini-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 7px;
+      align-items: center;
+      min-height: 34px;
+    }
+
+    .mini-item .token {
+      width: 30px;
+      height: 30px;
     }
 
     .token {
@@ -905,6 +1027,12 @@
       #calculator .btn-row {
         grid-template-columns: 1fr 1fr;
       }
+      .mutation-grid {
+        grid-template-columns: 1fr;
+      }
+      .mutation-options {
+        max-height: 240px;
+      }
       .hero {
         order: 1;
         padding: 6px 0 4px;
@@ -931,11 +1059,6 @@
       .section { padding: 11px 0; }
       .pad { padding: 10px; }
       .top .nav { display: none; }
-      .admin-toggle {
-        max-width: 42px;
-        overflow: hidden;
-        padding: 0 10px;
-      }
     }
 
     @media (min-width: 761px) and (max-width: 1024px) {
@@ -947,7 +1070,7 @@
       .bottom-nav { display: block; }
       .bottom-nav-inner {
         width: min(760px, 100%);
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(5, 1fr);
         padding-inline: 14px;
       }
       .bottom-nav a {
@@ -1011,6 +1134,7 @@
         </label>
         <select class="lang" id="lang" aria-label="Language">
           <option value="en">EN</option>
+          <option value="zh">ZH</option>
           <option value="pt">PT</option>
           <option value="id">ID</option>
         </select>
@@ -1018,6 +1142,7 @@
     </div>
     <nav class="wrap nav" aria-label="Sections">
       <a href="#calculator" data-i18n="nav_calc">Calculator</a>
+      <a href="#mutations" data-i18n="nav_mutations">Mutations</a>
       <a href="#profile" data-i18n="nav_profile">Profile</a>
       <a href="#values" data-i18n="nav_values">Values</a>
       <a href="#market" data-i18n="nav_market">Community</a>
@@ -1100,6 +1225,40 @@
           <button class="btn" id="clear-trade" data-i18n="clear">Clear</button>
         </div>
 
+      </div>
+    </section>
+
+    <section class="wrap section" id="mutations">
+      <div class="section-head">
+        <h2 data-i18n="mutation_title">Mutation Calculator</h2>
+        <p class="sub" data-i18n="mutation_sub">Estimate mutated crop value by weight, variant and stacked environmental mutations.</p>
+      </div>
+      <div class="panel pad mutation-grid">
+        <div class="mutation-form">
+          <div class="mutation-field">
+            <label class="meta" for="mutation-crop" data-i18n="mutation_crop">Crop</label>
+            <select class="input" id="mutation-crop"></select>
+          </div>
+          <div class="mutation-field">
+            <label class="meta" for="mutation-weight" data-i18n="mutation_weight">Weight kg</label>
+            <input class="input" id="mutation-weight" type="number" min="0" step="0.1" value="1" />
+          </div>
+          <div class="mutation-field">
+            <span class="meta" data-i18n="mutation_variant">Variant</span>
+            <div class="variant-options" id="variant-options"></div>
+          </div>
+          <div class="mutation-field">
+            <span class="meta" data-i18n="mutation_environmental">Environmental mutations</span>
+            <div class="mutation-options" id="environmental-options"></div>
+          </div>
+        </div>
+        <div class="mutation-result">
+          <span class="meta" data-i18n="mutation_final">Final estimate</span>
+          <div class="final-value" id="mutation-final">0 Sheckles</div>
+          <div class="rating rating-normal" id="mutation-rating">Normal</div>
+          <p class="sub" id="mutation-formula">-</p>
+          <button class="btn primary" id="copy-mutation" data-i18n="copy_mutation">Copy Estimate</button>
+        </div>
       </div>
     </section>
 
@@ -1227,6 +1386,7 @@
       <a href="#calculator" data-i18n="nav_calc">Calculator</a>
       <a href="#values" data-i18n="nav_values">Values</a>
       <a href="#market" data-i18n="nav_market">Community</a>
+      <a href="#intel" data-i18n="report">Report</a>
       <a href="#codes" data-i18n="nav_codes">Codes</a>
     </div>
   </nav>
@@ -1249,7 +1409,7 @@
   <script>
     const translations = {
       en: {
-        nav_calc: "Calculator", nav_profile: "Profile", nav_values: "Values", nav_market: "Community", nav_signals: "Signals", nav_intel: "Submit", nav_codes: "Codes", nav_updates: "Updates",
+        nav_calc: "Calculator", nav_mutations: "Mutations", nav_profile: "Profile", nav_values: "Values", nav_market: "Community", nav_signals: "Signals", nav_intel: "Submit", nav_codes: "Codes", nav_updates: "Updates",
         hero_title: "TradePulse tracks Grow a Garden values, codes and W/F/L checks.",
         hero_lead: "A lightweight Roblox tool for mobile players. Check values, copy codes and share trades for community votes.",
         quick_calc_title: "Trade Check", quick_calc_sub: "Build a W/F/L trade",
@@ -1268,10 +1428,32 @@
         footer: "TradePulse is an unofficial fan-made tool. Not affiliated with Roblox or Grow a Garden. Never enter your Roblox password on third-party sites.",
         add_item: "Add Item", no_items: "Tap here to add an item", no_found: "No items found",
         copied_link: "Share link copied", copied_text: "Result copied", copied_code: "Code copied", copy_blocked: "Copy blocked by browser",
-        value: "Sheckles Value", demand: "Demand", trend: "Trend", copy: "Copy", like: "Like", comment: "Comment", comment_placeholder: "Add a quick roast or advice...", post_trade: "Post to Community", posted_trade: "Trade posted to Community", add_items_first: "Add items to both sides first", signals_title: "Market Signals", signals_sub: "Early anti-manipulation alerts from community votes. Final value changes should still be reviewed by an admin.", review: "Review", watch: "Watch", stable: "Stable", loss_rate: "Loss rate", signals_queue: "Signal Queue", admin_review: "Admin Review", current_value: "Current", new_value: "New value", update_value: "Update", value_updated: "Value updated", updated: "Updated", confidence: "Confidence", checked: "Checked", data_notice: "Values are community estimates for testing and can change quickly. Verify codes in game before publishing them as active.", report: "Report", works: "Works", expired: "Expired", intel_title: "Submit Intel", intel_sub: "Players can report price changes, new items, or code updates. Admins review submissions before anything becomes official.", intel_price: "Price change", intel_item: "New item", intel_code: "Code update", intel_target: "Item or code name", intel_value: "Suggested value or reward", intel_note: "Short note, source, or proof link", submit_intel: "Submit for Review", intel_saved: "Submitted for admin review", admin_queue: "Player Intel Queue", no_intel: "No player intel yet", feed_limit: "Showing top 20", feed_logic: "Pending trades shuffle on each page load", tab_needs: "Needs Vote", tab_decided: "Decided", sort_recent: "Recent", sort_top: "Top All-Time", needs_votes: "Needs Votes", high_value: "High Value", hot: "Hot", resolved: "Resolved", final_badge: "Final Badge", profile_title: "Trade Profile", profile_sub: "A lightweight player trade page for recent and hot trades.", copy_profile: "Copy Profile Link", profile_recent: "Recent trades", profile_hot: "Hot trades stay visible", no_profile_trades: "Post trades from the calculator to build your profile.", copied_profile: "Profile link copied"
+        value: "Sheckles Value", demand: "Demand", trend: "Trend", copy: "Copy", like: "Like", comment: "Comment", comment_placeholder: "Add a quick roast or advice...", post_trade: "Post to Community", posted_trade: "Trade posted to Community", add_items_first: "Add items to both sides first", signals_title: "Market Signals", signals_sub: "Early anti-manipulation alerts from community votes. Final value changes should still be reviewed by an admin.", review: "Review", watch: "Watch", stable: "Stable", loss_rate: "Loss rate", signals_queue: "Signal Queue", admin_review: "Admin Review", current_value: "Current", new_value: "New value", update_value: "Update", value_updated: "Value updated", updated: "Updated", confidence: "Confidence", checked: "Checked", data_notice: "Values are community estimates for testing and can change quickly. Verify codes in game before publishing them as active.", report: "Report", works: "Works", expired: "Expired", intel_title: "Submit Intel", intel_sub: "Players can report price changes, new items, or code updates. Admins review submissions before anything becomes official.", intel_price: "Price change", intel_item: "New item", intel_code: "Code update", intel_target: "Item or code name", intel_value: "Suggested value or reward", intel_note: "Short note, source, or proof link", submit_intel: "Submit for Review", intel_saved: "Submitted for admin review", admin_queue: "Player Intel Queue", no_intel: "No player intel yet", feed_limit: "Showing top 20", feed_logic: "Pending trades shuffle on each page load", tab_needs: "Needs Vote", tab_decided: "Decided", sort_recent: "Recent", sort_top: "Top All-Time", needs_votes: "Needs Votes", high_value: "High Value", hot: "Hot", resolved: "Resolved", final_badge: "Final Badge", profile_title: "Trade Profile", profile_sub: "A lightweight player trade page for recent and hot trades.", copy_profile: "Copy Profile Link", profile_recent: "Recent trades", profile_hot: "Hot trades stay visible", no_profile_trades: "Post trades from the calculator to build your profile.", copied_profile: "Profile link copied", mutation_title: "Mutation Calculator", mutation_sub: "Estimate mutated crop value by weight, variant and stacked environmental mutations.", mutation_crop: "Crop", mutation_weight: "Weight kg", mutation_variant: "Variant", mutation_environmental: "Environmental mutations", mutation_final: "Final estimate", copy_mutation: "Copy Estimate", copied_mutation: "Mutation estimate copied"
+      },
+      zh: {
+        nav_calc: "计算器", nav_mutations: "变异", nav_profile: "主页", nav_values: "价值", nav_market: "社区", nav_signals: "信号", nav_intel: "提交", nav_codes: "兑换码", nav_updates: "更新",
+        hero_title: "TradePulse 提供 Grow a Garden 价值、兑换码和 W/F/L 交易判断。",
+        hero_lead: "面向移动端玩家的轻量 Roblox 工具。查询价值、复制兑换码、分享交易让社区投票。",
+        quick_calc_title: "交易判断", quick_calc_sub: "创建 W/F/L 交易",
+        quick_values_title: "价值表", quick_values_sub: "搜索物品价格",
+        quick_market_title: "社区交易", quick_market_sub: "晒交易和吐槽墙",
+        today_codes: "兑换码检查", today_signals: "市场信号", today_hot: "热门交易",
+        calc_title: "交易计算器", calc_sub: "创建交易、复制分享链接，让其他玩家投票判断。",
+        my_offer: "我的报价", their_offer: "对方报价", items: "个物品",
+        my_total: "我的总价", diff: "差价", their_total: "对方总价", result: "结果",
+        copy_link: "复制分享链接", copy_text: "复制文本", clear: "清空",
+        win: "赚", fair: "公平", lose: "亏", market_title: "社区交易", market_sub: "给其他玩家的交易点赞、评论并投 W/F/L。",
+        values_title: "价值表", values_sub: "当前为测试价值，后续替换为已核查市场数据。",
+        search_placeholder: "搜索物品...", sort_high: "高价值", sort_low: "低价值",
+        codes_title: "兑换码", codes_sub: "兑换码可能随时过期。最后检查：2026-05-27。",
+        updates_title: "更新", updates_sub: "价值检查、兑换码检查和活动记录。",
+        footer: "TradePulse 是非官方粉丝工具，不隶属于 Roblox 或 Grow a Garden。不要在第三方网站输入 Roblox 密码。",
+        add_item: "添加物品", no_items: "点击这里添加物品", no_found: "没有找到物品",
+        copied_link: "分享链接已复制", copied_text: "结果已复制", copied_code: "兑换码已复制", copy_blocked: "浏览器阻止复制",
+        value: "Sheckles 价值", demand: "需求", trend: "趋势", copy: "复制", like: "点赞", comment: "评论", comment_placeholder: "写一句吐槽或建议...", post_trade: "发布到社区", posted_trade: "交易已发布到社区", add_items_first: "请先给双方都添加物品", signals_title: "市场信号", signals_sub: "来自社区投票的早期反控价预警。最终价格调整仍应由管理员审核。", review: "审核", watch: "观察", stable: "稳定", loss_rate: "亏损率", signals_queue: "信号队列", admin_review: "管理员审核", current_value: "当前", new_value: "新价值", update_value: "更新", value_updated: "价值已更新", updated: "更新", confidence: "可信度", checked: "检查", data_notice: "价值为社区估算测试数据，可能快速变化。发布兑换码前请先在游戏内验证。", report: "报错", works: "可用", expired: "过期", intel_title: "提交情报", intel_sub: "玩家可以提交价格变化、新物品或兑换码更新。管理员审核后再成为正式数据。", intel_price: "价格变化", intel_item: "新物品", intel_code: "兑换码更新", intel_target: "物品或兑换码名称", intel_value: "建议价值或奖励", intel_note: "简短说明、来源或证据链接", submit_intel: "提交审核", intel_saved: "已提交到管理员审核", admin_queue: "玩家情报队列", no_intel: "暂无玩家情报", feed_limit: "最多显示 20 条", feed_logic: "待投票交易每次加载随机排序", tab_needs: "需要投票", tab_decided: "已判定", sort_recent: "最新", sort_top: "历史热门", needs_votes: "需要投票", high_value: "高价值", hot: "热门", resolved: "已判定", final_badge: "最终标签", profile_title: "交易主页", profile_sub: "展示玩家最近和热门交易的轻量主页。", copy_profile: "复制主页链接", profile_recent: "最近交易", profile_hot: "热门交易保留展示", no_profile_trades: "从计算器发布交易来创建主页。", copied_profile: "主页链接已复制", mutation_title: "变异计算器", mutation_sub: "按重量、Variant 和多重环境变异估算作物价值。", mutation_crop: "作物", mutation_weight: "重量 kg", mutation_variant: "Variant 变异", mutation_environmental: "环境变异", mutation_final: "最终估值", copy_mutation: "复制估值", copied_mutation: "变异估值已复制"
       },
       pt: {
-        nav_calc: "Calculadora", nav_profile: "Perfil", nav_values: "Valores", nav_market: "Comunidade", nav_signals: "Sinais", nav_intel: "Enviar", nav_codes: "Codigos", nav_updates: "Updates",
+        nav_calc: "Calculadora", nav_mutations: "Mutacoes", nav_profile: "Perfil", nav_values: "Valores", nav_market: "Comunidade", nav_signals: "Sinais", nav_intel: "Enviar", nav_codes: "Codigos", nav_updates: "Updates",
         hero_title: "TradePulse acompanha valores, codigos e W/F/L de Grow a Garden.",
         hero_lead: "Uma ferramenta Roblox leve para celular. Veja valores, copie codigos e compartilhe trocas para votos da comunidade.",
         quick_calc_title: "Checar troca", quick_calc_sub: "Monte uma troca W/F/L",
@@ -1293,7 +1475,7 @@
         value: "Valor em Sheckles", demand: "Demanda", trend: "Tendencia", copy: "Copiar", like: "Curtir", comment: "Comentar", comment_placeholder: "Adicione um roast ou conselho...", post_trade: "Postar na comunidade", posted_trade: "Troca postada na comunidade", add_items_first: "Adicione itens dos dois lados primeiro", signals_title: "Sinais de mercado", signals_sub: "Alertas iniciais anti-manipulacao vindos dos votos da comunidade. Mudancas finais ainda precisam de revisao de admin.", review: "Revisar", watch: "Observar", stable: "Estavel", loss_rate: "Taxa de perda", signals_queue: "Fila de sinais", admin_review: "Revisao admin", current_value: "Atual", new_value: "Novo valor", update_value: "Atualizar", value_updated: "Valor atualizado", updated: "Atualizado", confidence: "Confianca", checked: "Checado", data_notice: "Valores sao estimativas da comunidade para teste e podem mudar rapido. Verifique codigos no jogo antes de publicar como ativos.", report: "Reportar", works: "Funciona", expired: "Expirou", intel_title: "Enviar intel", intel_sub: "Jogadores podem reportar mudancas de preco, novos itens ou codigos. Admins revisam antes de virar oficial.", intel_price: "Mudanca de preco", intel_item: "Novo item", intel_code: "Atualizacao de codigo", intel_target: "Nome do item ou codigo", intel_value: "Valor ou recompensa sugerida", intel_note: "Nota curta, fonte ou prova", submit_intel: "Enviar para revisao", intel_saved: "Enviado para revisao admin", admin_queue: "Fila de intel", no_intel: "Sem intel ainda", tab_needs: "Precisa de votos", tab_decided: "Decidido", sort_recent: "Recentes", sort_top: "Top historico", profile_title: "Perfil de trades", profile_sub: "Pagina leve com trades recentes e populares.", copy_profile: "Copiar link do perfil", profile_recent: "Trades recentes", profile_hot: "Trades quentes ficam visiveis", no_profile_trades: "Poste trades da calculadora para criar seu perfil.", copied_profile: "Link do perfil copiado"
       },
       id: {
-        nav_calc: "Kalkulator", nav_profile: "Profil", nav_values: "Nilai", nav_market: "Komunitas", nav_signals: "Sinyal", nav_intel: "Kirim", nav_codes: "Kode", nav_updates: "Update",
+        nav_calc: "Kalkulator", nav_mutations: "Mutasi", nav_profile: "Profil", nav_values: "Nilai", nav_market: "Komunitas", nav_signals: "Sinyal", nav_intel: "Kirim", nav_codes: "Kode", nav_updates: "Update",
         hero_title: "TradePulse melacak nilai, kode, dan cek W/F/L Grow a Garden.",
         hero_lead: "Tool Roblox ringan untuk pemain mobile. Cek nilai, salin kode, dan bagikan trade untuk vote komunitas.",
         quick_calc_title: "Cek Trade", quick_calc_sub: "Buat trade W/F/L",
@@ -1317,21 +1499,59 @@
     };
 
     let itemDatabase = [
-      { id: "star-sunflower", name: "Star Sunflower", short: "SS", type: "Crop", rarity: "Rare", value: 100, demand: "Low", trend: "Stable" },
-      { id: "moon-melon", name: "Moon Melon", short: "MM", type: "Crop", rarity: "Rare", value: 250, demand: "Medium", trend: "Stable" },
-      { id: "glow-carrot", name: "Glow Carrot", short: "GC", type: "Crop", rarity: "Epic", value: 450, demand: "Medium", trend: "Up" },
-      { id: "crystal-cabbage", name: "Crystal Cabbage", short: "CC", type: "Crop", rarity: "Epic", value: 700, demand: "Medium", trend: "Stable" },
-      { id: "ruby-tomato", name: "Ruby Tomato", short: "RT", type: "Crop", rarity: "Legendary", value: 950, demand: "High", trend: "Up" },
-      { id: "golden-watermelon", name: "Golden Watermelon", short: "GW", type: "Crop", rarity: "Legendary", value: 1300, demand: "High", trend: "Stable" },
-      { id: "prism-pumpkin", name: "Prism Pumpkin", short: "PP", type: "Crop", rarity: "Mythic", value: 1800, demand: "High", trend: "Up" },
-      { id: "royal-orchid", name: "Royal Orchid", short: "RO", type: "Plant", rarity: "Mythic", value: 2400, demand: "High", trend: "Stable" },
-      { id: "cloud-peach", name: "Cloud Peach", short: "CP", type: "Crop", rarity: "Mythic", value: 3100, demand: "Medium", trend: "Down" },
-      { id: "frost-berry", name: "Frost Berry", short: "FB", type: "Crop", rarity: "Divine", value: 3900, demand: "High", trend: "Up" },
-      { id: "solar-mango", name: "Solar Mango", short: "SM", type: "Crop", rarity: "Divine", value: 4800, demand: "High", trend: "Stable" },
-      { id: "void-flytrap", name: "Void Flytrap", short: "VF", type: "Plant", rarity: "Divine", value: 6000, demand: "Very High", trend: "Up" },
-      { id: "nebula-mushroom", name: "Nebula Mushroom", short: "NM", type: "Plant", rarity: "Secret", value: 7200, demand: "Very High", trend: "Stable" },
-      { id: "celestial-pineapple", name: "Celestial Pineapple", short: "CPN", type: "Crop", rarity: "Secret", value: 8600, demand: "Very High", trend: "Up" },
-      { id: "divine-seed-pack", name: "Divine Seed Pack", short: "DSP", type: "Pack", rarity: "Event", value: 10000, demand: "Very High", trend: "Up" }
+      { id: "kitsune", name: "Kitsune", short: "KI", type: "Pet", rarity: "Prismatic", value: 500000, demand: "Very High", trend: "Up", icon: "assets/items/pet.svg" },
+      { id: "raccoon", name: "Raccoon", short: "RC", type: "Pet", rarity: "Divine", value: 200000, demand: "Very High", trend: "Up", icon: "assets/items/pet.svg" },
+      { id: "disco-bee", name: "Disco Bee", short: "DB", type: "Pet", rarity: "Divine", value: 175000, demand: "Very High", trend: "Up", icon: "assets/items/pet.svg" },
+      { id: "fennec-fox", name: "Fennec Fox", short: "FF", type: "Pet", rarity: "Divine", value: 120000, demand: "Very High", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "butterfly", name: "Butterfly", short: "BF", type: "Pet", rarity: "Mythic", value: 90000, demand: "Very High", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "corrupted-kitsune", name: "Corrupted Kitsune", short: "CK", type: "Pet", rarity: "Prismatic", value: 85000, demand: "High", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "mimic-octopus", name: "Mimic Octopus", short: "MO", type: "Pet", rarity: "Divine", value: 40000, demand: "High", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "spinosaurus", name: "Spinosaurus", short: "SP", type: "Pet", rarity: "Divine", value: 30000, demand: "High", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "t-rex", name: "T-Rex", short: "TR", type: "Pet", rarity: "Divine", value: 15000, demand: "High", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "lion", name: "Lion", short: "LI", type: "Pet", rarity: "Legendary", value: 11000, demand: "High", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "blood-owl", name: "Blood Owl", short: "BO", type: "Pet", rarity: "Divine", value: 10000, demand: "High", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "lobster-thermidor", name: "Lobster Thermidor", short: "LT", type: "Pet", rarity: "Divine", value: 5000, demand: "Medium", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "golden-goose", name: "Golden Goose", short: "GG", type: "Pet", rarity: "Mythic", value: 4500, demand: "Medium", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "red-fox", name: "Red Fox", short: "RF", type: "Pet", rarity: "Mythic", value: 1700, demand: "Medium", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "golden-lab", name: "Golden Lab", short: "GL", type: "Pet", rarity: "Common", value: 1500, demand: "Medium", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "junkbot", name: "Junkbot", short: "JB", type: "Pet", rarity: "Rare", value: 400, demand: "Low", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "gorilla-chef", name: "Gorilla Chef", short: "GC", type: "Pet", rarity: "Rare", value: 250, demand: "Low", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "brown-mouse", name: "Brown Mouse", short: "BM", type: "Pet", rarity: "Common", value: 100, demand: "Low", trend: "Stable", icon: "assets/items/pet.svg" },
+      { id: "unicorn-seed", name: "Unicorn Seed", short: "US", type: "Seed", rarity: "Prismatic", value: 80000, demand: "Very High", trend: "Up", icon: "assets/items/seed.svg" },
+      { id: "rainbow-sprout", name: "Rainbow Sprout", short: "RS", type: "Seed", rarity: "Mythic", value: 50000, demand: "Very High", trend: "Up", icon: "assets/items/seed.svg" },
+      { id: "magic-bean", name: "Magic Bean", short: "MB", type: "Seed", rarity: "Legendary", value: 25000, demand: "High", trend: "Stable", icon: "assets/items/seed.svg" },
+      { id: "bamboo", name: "Bamboo", short: "BA", type: "Seed", rarity: "Uncommon", value: 1500, demand: "Medium", trend: "Stable", icon: "assets/items/seed.svg" },
+      { id: "strawberry", name: "Strawberry", short: "ST", type: "Seed", rarity: "Common", value: 150, demand: "Low", trend: "Stable", icon: "assets/items/seed.svg" },
+      { id: "blueberry", name: "Blueberry", short: "BL", type: "Seed", rarity: "Common", value: 150, demand: "Low", trend: "Stable", icon: "assets/items/seed.svg" },
+      { id: "tomato", name: "Tomato", short: "TO", type: "Seed", rarity: "Common", value: 150, demand: "Low", trend: "Stable", icon: "assets/items/seed.svg" },
+      { id: "carrot", name: "Carrot", short: "CA", type: "Seed", rarity: "Common", value: 100, demand: "Low", trend: "Stable", icon: "assets/items/seed.svg" },
+      { id: "rainbow-hoe", name: "Rainbow Hoe", short: "RH", type: "Gear", rarity: "Mythic", value: 35000, demand: "High", trend: "Stable", icon: "assets/items/gear.svg" },
+      { id: "shiny-watering-can", name: "Shiny Watering Can", short: "SW", type: "Gear", rarity: "Legendary", value: 20000, demand: "High", trend: "Stable", icon: "assets/items/gear.svg" },
+      { id: "turbo-boots", name: "Turbo Boots", short: "TB", type: "Gear", rarity: "Legendary", value: 15000, demand: "Medium", trend: "Stable", icon: "assets/items/gear.svg" },
+      { id: "pet-pouch", name: "Pet Pouch", short: "PP", type: "Gear", rarity: "Epic", value: 5000, demand: "Medium", trend: "Stable", icon: "assets/items/gear.svg" }
+    ];
+
+    let VARIANT_MUTATIONS = [
+      { name: "Ripe", multiplier: 1, tier: "D", color: "#9CA3AF" },
+      { name: "Silver", multiplier: 5, tier: "C", color: "#6EE7B7" },
+      { name: "Gold", multiplier: 20, tier: "B", color: "#60A5FA" },
+      { name: "Rainbow", multiplier: 50, tier: "S", color: "#F59E0B" }
+    ];
+
+    let ENV_MUTATIONS = [
+      { name: "Abyssal", multiplier: 240, tier: "S", color: "#F59E0B" },
+      { name: "Voidtouched", multiplier: 135, tier: "S", color: "#F59E0B" },
+      { name: "Disco", multiplier: 125, tier: "S", color: "#F59E0B" },
+      { name: "Celestial", multiplier: 120, tier: "S", color: "#F59E0B" },
+      { name: "Eternal", multiplier: 110, tier: "S", color: "#F59E0B" },
+      { name: "Shocked", multiplier: 100, tier: "A", color: "#F97316" },
+      { name: "Plasma", multiplier: 85, tier: "A", color: "#F97316" },
+      { name: "Zombified", multiplier: 25, tier: "A", color: "#F97316" },
+      { name: "Bloom", multiplier: 40, tier: "B", color: "#60A5FA" },
+      { name: "Gold Soil", multiplier: 20, tier: "B", color: "#60A5FA" },
+      { name: "Moonlit", multiplier: 3, tier: "D", color: "#9CA3AF" },
+      { name: "Wet", multiplier: 2, tier: "D", color: "#9CA3AF" },
+      { name: "Chilled", multiplier: 2, tier: "D", color: "#9CA3AF" }
     ];
 
     let codeDatabase = [
@@ -1519,17 +1739,20 @@
     }
 
     async function loadDataFiles() {
-      const [items, codes, updates, trades] = await Promise.all([
+      const [items, codes, updates, trades, mutations] = await Promise.all([
         readJson("data/items.json", itemDatabase),
         readJson("data/codes.json", codeDatabase),
         readJson("data/updates.json", updateDatabase),
-        readJson("data/trades.json", tradeFeed)
+        readJson("data/trades.json", tradeFeed),
+        readJson("data/mutations.json", { variants: VARIANT_MUTATIONS, environmental: ENV_MUTATIONS })
       ]);
 
-      itemDatabase = items.map(item => ({ ...item, icon: item.icon || `assets/items/${item.id}.svg` }));
+      itemDatabase = items.map(normalizeItem);
       codeDatabase = codes;
       updateDatabase = updates;
       tradeFeed = [...getSavedTrades(), ...trades];
+      VARIANT_MUTATIONS = Array.isArray(mutations.variants) ? mutations.variants : VARIANT_MUTATIONS;
+      ENV_MUTATIONS = Array.isArray(mutations.environmental) ? mutations.environmental : ENV_MUTATIONS;
       seedFeedShuffle();
     }
 
@@ -1543,6 +1766,8 @@
       decidedSort: "recent",
       feedShuffle: new Map(),
       sharedProfileTrades: [],
+      mutationVariant: "Ripe",
+      mutationEnvironmental: new Set(),
       lang: getSavedLang(),
       theme: getSavedTheme(),
       adminMode: getSavedAdminMode(),
@@ -1553,8 +1778,30 @@
     const byId = id => document.getElementById(id);
     const t = key => (translations[state.lang] || translations.en)[key] || translations.en[key] || key;
     const formatValue = value => `${money.format(value)} Sheckles`;
+    const itemValue = item => Number(item.sortValue ?? item.value ?? 0);
+    const itemValueLabel = item => item.valueLabel || formatValue(itemValue(item));
+    const normalizeItem = item => {
+      const value = Number(item.value ?? item.sortValue ?? 0);
+      return {
+        ...item,
+        value,
+        sortValue: Number(item.sortValue ?? value),
+        valueLabel: item.valueLabel || formatValue(value),
+        icon: item.icon || `assets/items/${item.id}.svg`
+      };
+    };
     const uid = () => window.crypto && crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
     const itemIcon = item => item.icon ? `<img src="${item.icon}" alt="" loading="lazy" />` : item.short;
+    const renderMiniItems = items => `
+      <div class="mini-items">
+        ${items.map(item => `
+          <div class="mini-item">
+            <span class="token">${itemIcon(item)}</span>
+            <strong>${item.name}</strong>
+          </div>
+        `).join("")}
+      </div>
+    `;
 
     function seedFeedShuffle() {
       state.feedShuffle = new Map(tradeFeed.map(trade => [trade.id, Math.random()]));
@@ -1572,6 +1819,7 @@
       byId("sort-values").textContent = state.sortHigh ? t("sort_high") : t("sort_low");
       renderTrade();
       renderValues();
+      renderMutationCalculator();
       renderCodes();
       renderUpdates();
       renderTradeFeed();
@@ -1610,7 +1858,7 @@
     }
 
     function addItem(item) {
-      state[state.activeSide].push({ ...item, uid: uid() });
+      state[state.activeSide].push({ ...normalizeItem(item), uid: uid() });
       closeModal();
       renderTrade();
     }
@@ -1621,7 +1869,7 @@
     }
 
     function total(side) {
-      return state[side].reduce((sum, item) => sum + item.value, 0);
+      return state[side].reduce((sum, item) => sum + itemValue(item), 0);
     }
 
     function outcome(myTotal, theirTotal) {
@@ -1668,7 +1916,7 @@
           <span class="token">${itemIcon(item)}</span>
           <div>
             <div class="name">${item.name}</div>
-            <div class="meta">${item.rarity} | ${t("value")} ${formatValue(item.value)}</div>
+            <div class="meta">${item.rarity} | ${t("value")} ${itemValueLabel(item)}</div>
           </div>
           <button class="icon-btn" aria-label="Remove ${item.name}">x</button>
         `;
@@ -1716,7 +1964,7 @@
           <span class="token">${itemIcon(item)}</span>
           <div>
             <div class="name">${item.name}</div>
-            <div class="meta">${item.rarity} | ${item.type} | ${formatValue(item.value)}</div>
+            <div class="meta">${item.rarity} | ${item.type} | ${itemValueLabel(item)}</div>
           </div>
           <span class="pill">+</span>
         `;
@@ -1728,8 +1976,8 @@
     function renderValues() {
       const query = byId("value-search").value.trim().toLowerCase();
       const items = itemDatabase
-        .filter(item => `${item.name} ${item.type} ${item.rarity} ${item.demand}`.toLowerCase().includes(query))
-        .sort((a, b) => state.sortHigh ? b.value - a.value : a.value - b.value);
+        .filter(item => `${item.name} ${item.type} ${item.rarity} ${item.demand} ${item.valueLabel || ""} ${item.obtainMethod || ""}`.toLowerCase().includes(query))
+        .sort((a, b) => state.sortHigh ? itemValue(b) - itemValue(a) : itemValue(a) - itemValue(b));
       const list = byId("value-list");
       list.innerHTML = "";
       items.forEach(item => {
@@ -1739,22 +1987,113 @@
           <span class="token">${itemIcon(item)}</span>
           <div>
             <h3 class="name">${item.name}</h3>
-            <p class="meta">${item.rarity} | ${t("demand")}: ${item.demand}</p>
+            <p class="meta">${item.rarity} | ${item.type} | ${t("demand")}: ${item.demand}</p>
             <p class="meta">${t("updated")}: ${item.lastUpdated || "TBD"} | ${t("confidence")}: ${item.confidence || "Sample"}</p>
+            ${item.obtainMethod ? `<p class="meta">${item.obtainMethod}</p>` : ""}
           </div>
           <div>
-            <strong>${formatValue(item.value)}</strong>
+            <strong>${itemValueLabel(item)}</strong>
             <button class="btn report-btn" data-item="${item.id}">${t("report")}</button>
           </div>
         `;
-        row.querySelector(".report-btn").addEventListener("click", () => addIntel({
-          type: "price",
-          target: item.name,
-          value: formatValue(item.value),
-          note: "Player reported this value as possibly wrong"
-        }));
+        row.querySelector(".report-btn").addEventListener("click", () => prefillPriceReport(item));
         list.appendChild(row);
       });
+    }
+
+    function prefillPriceReport(item) {
+      byId("intel-type").value = "price";
+      byId("intel-target").value = item.name;
+      byId("intel-value").value = itemValueLabel(item);
+      byId("intel-note").value = "";
+      location.hash = "intel";
+      setTimeout(() => byId("intel-note").focus(), 120);
+    }
+
+    function mutationCrops() {
+      const crops = itemDatabase.filter(item => ["Crop", "Plant", "Seed"].includes(item.type));
+      return crops.length ? crops : itemDatabase;
+    }
+
+    function renderMutationCalculator() {
+      const cropSelect = byId("mutation-crop");
+      if (!cropSelect) return;
+      const previous = cropSelect.value;
+      const crops = mutationCrops();
+      cropSelect.innerHTML = crops.map(item => `<option value="${item.id}">${item.name} - ${itemValueLabel(item)}</option>`).join("");
+      cropSelect.value = crops.some(item => item.id === previous) ? previous : crops[0]?.id || "";
+
+      byId("variant-options").innerHTML = VARIANT_MUTATIONS
+        .map(mutation => `
+          <label class="mutation-option tier-${mutation.tier}" style="border-color:${mutation.color}; color:${mutation.color}">
+            <input type="radio" name="mutation-variant" value="${mutation.name}" ${state.mutationVariant === mutation.name ? "checked" : ""} />
+            ${mutation.name} ${mutation.multiplierLabel || `${mutation.multiplier}x`}
+          </label>
+        `).join("");
+
+      byId("environmental-options").innerHTML = ["S", "A", "B", "C", "D"].map(tier => {
+        const mutations = ENV_MUTATIONS.filter(mutation => mutation.tier === tier);
+        if (!mutations.length) return "";
+        return `
+          <div class="mutation-tier">
+            <h4>Tier ${tier}</h4>
+            <div class="mutation-checks">
+              ${mutations.map(mutation => `
+                <label class="mutation-option tier-${mutation.tier}" style="border-color:${mutation.color}; color:${mutation.color}; opacity:${mutation.enabled === false ? "0.55" : "1"}">
+                  <input type="checkbox" value="${mutation.name}" ${state.mutationEnvironmental.has(mutation.name) ? "checked" : ""} ${mutation.enabled === false ? "disabled" : ""} />
+                  ${mutation.name} ${mutation.multiplierLabel || `${mutation.multiplier}x`}
+                </label>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      updateMutationResult();
+    }
+
+    function mutationRating(multiplier) {
+      if (multiplier > 5000) return { label: "Legendary", className: "rating-legendary" };
+      if (multiplier >= 500) return { label: "Epic", className: "rating-epic" };
+      if (multiplier >= 50) return { label: "Rare", className: "rating-rare" };
+      return { label: "Normal", className: "rating-normal" };
+    }
+
+    function mutationResult() {
+      const crop = itemDatabase.find(item => item.id === byId("mutation-crop").value) || mutationCrops()[0];
+      const weight = Math.max(Number(byId("mutation-weight").value) || 1, 0);
+      const variant = VARIANT_MUTATIONS.find(mutation => mutation.name === state.mutationVariant) || VARIANT_MUTATIONS[0];
+      const environmental = [...state.mutationEnvironmental]
+        .map(name => ENV_MUTATIONS.find(mutation => mutation.name === name))
+        .filter(Boolean);
+      const envMultiplier = environmental.reduce((product, mutation) => product * Number(mutation.multiplier || 1), 1);
+      const weightSquare = weight * weight;
+      const baseValue = crop ? itemValue(crop) : 0;
+      const totalMultiplier = variant.multiplier * envMultiplier;
+      const finalValue = Math.round(baseValue * weightSquare * totalMultiplier);
+      return { crop, weight, variant, environmental, weightSquare, baseValue, totalMultiplier, finalValue };
+    }
+
+    function updateMutationResult() {
+      const result = mutationResult();
+      const rating = mutationRating(result.totalMultiplier);
+      byId("mutation-final").textContent = formatValue(result.finalValue);
+      byId("mutation-rating").textContent = rating.label;
+      byId("mutation-rating").className = `rating ${rating.className}`;
+      const envParts = result.environmental.map(mutation => `${mutation.multiplier} (${mutation.name})`);
+      const parts = [
+        `${money.format(result.baseValue)} base`,
+        `${result.variant.multiplier} (${result.variant.name})`,
+        ...envParts,
+        `${Number(result.weightSquare.toFixed(2))} weight^2`
+      ];
+      byId("mutation-formula").textContent = `${parts.join(" x ")} = ${money.format(result.finalValue)}`;
+    }
+
+    function mutationText() {
+      const result = mutationResult();
+      const envNames = result.environmental.map(mutation => mutation.name).join(", ") || "none";
+      return `${result.crop?.name || "Crop"} mutation estimate: ${formatValue(result.finalValue)} | ${result.weight}kg | ${result.variant.name} | Environmental: ${envNames}`;
     }
 
     function renderCodes() {
@@ -1826,8 +2165,8 @@
     function tradeStats(trade) {
       const myItems = trade.my.map(id => itemDatabase.find(item => item.id === id)).filter(Boolean);
       const theirItems = trade.their.map(id => itemDatabase.find(item => item.id === id)).filter(Boolean);
-      const myTotal = myItems.reduce((sum, item) => sum + item.value, 0);
-      const theirTotal = theirItems.reduce((sum, item) => sum + item.value, 0);
+      const myTotal = myItems.reduce((sum, item) => sum + itemValue(item), 0);
+      const theirTotal = theirItems.reduce((sum, item) => sum + itemValue(item), 0);
       const tradeValue = Math.max(myTotal, theirTotal);
       const diffRatio = Math.abs(theirTotal - myTotal) / Math.max(tradeValue, 1);
       const votes = trade.votes.W + trade.votes.F + trade.votes.L;
@@ -1910,7 +2249,6 @@
 
       feedItems.forEach(({ trade, stats }, index) => {
         const { myItems, theirItems, myTotal, theirTotal } = stats;
-        const result = outcome(myTotal, theirTotal);
         const tagText = trade.tag === "W" ? "W (Win)" : trade.tag === "L" ? "L (Loss)" : "F (Fair)";
         const tagClass = trade.tag === "W" ? "win-tag" : trade.tag === "L" ? "loss-tag" : "fair-tag";
         const mood = tradeMood(myTotal, theirTotal, trade.votes);
@@ -1924,7 +2262,7 @@
           <div class="box-head">
             <div>
               <h3>${trade.title}</h3>
-              <p class="meta">${trade.owner}'s trade | ${formatValue(myTotal)} vs ${formatValue(theirTotal)} | ${stats.votes}/20 votes</p>
+              <p class="meta">${trade.owner}'s trade | ${itemValueLabel({ sortValue: myTotal })} vs ${itemValueLabel({ sortValue: theirTotal })} | ${stats.votes}/20 votes</p>
             </div>
             <span class="post-tag ${stats.decided ? finalClass : tagClass}">${stats.decided && finalBadge.legendary ? (finalBadge.tone === "win" ? "Legendary W" : "Legendary L") : stats.decided ? finalBadge.label : tagText}</span>
           </div>
@@ -2055,7 +2393,7 @@
           <div class="box-head">
             <div>
               <h3>${trade.title}</h3>
-              <p class="meta">${formatValue(stats.myTotal)} vs ${formatValue(stats.theirTotal)} | ${stats.votes} votes</p>
+              <p class="meta">${itemValueLabel({ sortValue: stats.myTotal })} vs ${itemValueLabel({ sortValue: stats.theirTotal })} | ${stats.votes} votes</p>
             </div>
             <span class="post-tag ${finalClass}">${finalBadge.label}</span>
           </div>
@@ -2188,12 +2526,12 @@
             <div class="box-head">
               <div>
                 <h3>${signal.item.name}</h3>
-                <p class="meta">${t("current_value")}: ${formatValue(signal.item.value)} | ${t("loss_rate")}: ${signal.lossRate}%</p>
+                <p class="meta">${t("current_value")}: ${itemValueLabel(signal.item)} | ${t("loss_rate")}: ${signal.lossRate}%</p>
               </div>
               <span class="post-tag ${signal.level === "review" ? "loss-tag" : "fair-tag"}">${signal.level === "review" ? t("review") : t("watch")}</span>
             </div>
             <div class="adjust">
-              <input class="input" type="number" min="0" step="50" value="${signal.item.value}" aria-label="${t("new_value")}" />
+              <input class="input" type="number" min="0" step="50" value="${itemValue(signal.item)}" aria-label="${t("new_value")}" />
               <button class="btn">${t("update_value")}</button>
             </div>
           `;
@@ -2202,14 +2540,20 @@
             const nextValue = Number(input.value);
             if (!Number.isFinite(nextValue) || nextValue < 0) return;
             signal.item.value = Math.round(nextValue);
+            signal.item.sortValue = signal.item.value;
+            signal.item.valueLabel = formatValue(signal.item.value);
             state.my.forEach(item => {
-              if (item.id === signal.item.id) item.value = signal.item.value;
+              if (item.id === signal.item.id) Object.assign(item, normalizeItem(signal.item));
             });
             state.their.forEach(item => {
-              if (item.id === signal.item.id) item.value = signal.item.value;
+              if (item.id === signal.item.id) Object.assign(item, normalizeItem(signal.item));
+            });
+            itemDatabase.forEach(item => {
+              if (item.id === signal.item.id) Object.assign(item, normalizeItem(signal.item));
             });
             renderTrade();
             renderValues();
+            renderMutationCalculator();
             renderTradeFeed();
             renderSignals();
             renderAdminReview();
@@ -2323,8 +2667,8 @@
       });
 
       if (params.get("view") === "trade" && sharedIds.my.length && sharedIds.their.length) {
-        const myTotal = state.my.reduce((sum, item) => sum + item.value, 0);
-        const theirTotal = state.their.reduce((sum, item) => sum + item.value, 0);
+        const myTotal = state.my.reduce((sum, item) => sum + itemValue(item), 0);
+        const theirTotal = state.their.reduce((sum, item) => sum + itemValue(item), 0);
         const result = outcome(myTotal, theirTotal);
         const sharedTradeId = `shared-${sharedIds.my.join("-")}-vs-${sharedIds.their.join("-")}`;
 
@@ -2405,6 +2749,23 @@
       byId("sort-values").textContent = state.sortHigh ? t("sort_high") : t("sort_low");
       renderValues();
     });
+    byId("mutation-crop").addEventListener("change", updateMutationResult);
+    byId("mutation-weight").addEventListener("input", updateMutationResult);
+    byId("variant-options").addEventListener("change", event => {
+      if (event.target.name === "mutation-variant") {
+        state.mutationVariant = event.target.value;
+        updateMutationResult();
+      }
+    });
+    byId("environmental-options").addEventListener("change", event => {
+      if (event.target.checked) {
+        state.mutationEnvironmental.add(event.target.value);
+      } else {
+        state.mutationEnvironmental.delete(event.target.value);
+      }
+      updateMutationResult();
+    });
+    byId("copy-mutation").addEventListener("click", () => copyText(mutationText(), t("copied_mutation")));
     byId("copy-share").addEventListener("click", () => copyText(shareUrl(), t("copied_link")));
     byId("copy-profile").addEventListener("click", () => copyText(profileUrl(), t("copied_profile")));
     byId("post-trade").addEventListener("click", postCurrentTrade);
