@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS trades (
   id TEXT PRIMARY KEY,
+  player_id TEXT,
   owner TEXT NOT NULL DEFAULT 'Anonymous',
   title TEXT NOT NULL,
   note TEXT NOT NULL DEFAULT '',
@@ -15,6 +16,7 @@ CREATE TABLE IF NOT EXISTS trades (
 );
 
 CREATE INDEX IF NOT EXISTS idx_trades_created_at ON trades(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_trades_player_id ON trades(player_id, created_at DESC);
 CREATE TABLE IF NOT EXISTS trade_comments (
   id TEXT PRIMARY KEY,
   trade_id TEXT NOT NULL,

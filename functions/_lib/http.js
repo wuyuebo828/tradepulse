@@ -37,3 +37,8 @@ export function safeItems(value) {
     .filter(item => /^[a-z0-9-]{1,80}$/i.test(item))
     .slice(0, 12);
 }
+
+export function safePlayerId(value) {
+  const text = String(value || "").trim();
+  return /^[a-z0-9-]{8,80}$/i.test(text) ? text : null;
+}

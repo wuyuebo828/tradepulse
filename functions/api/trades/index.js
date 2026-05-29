@@ -1,4 +1,4 @@
-import { error, json, newId, readJson, requireDb, safeItems, safeText } from "../../_lib/http.js";
+import { error, json, newId, readJson, requireDb, safeItems, safePlayerId, safeText } from "../../_lib/http.js";
 import { rowToTrade } from "../../_lib/trades.js";
 
 export async function onRequestGet({ env, request }) {
@@ -26,15 +26,16 @@ export async function onRequestPost({ env, request }) {
 
   const tag = ["W", "F", "L"].includes(body.tag) ? body.tag : "F";
   const id = newId("trade");
+  const playerId = safePlayerId(body.playerId);
   const owner = safeText(body.owner, "Anonymous", 40) || "Anonymous";
   const title = safeText(body.title, "Fresh trade check", 120) || "Fresh trade check";
   const note = safeText(body.note, "", 500);
   const createdAt = new Date().toISOString();
 
   await db.prepare(`
-    INSERT INTO trades (id, owner, title, note, tag, my_json, their_json, likes, vote_w, vote_f, vote_l, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, 0, 0, 0, 0, ?)
-  `).bind(id, owner, title, note, tag, JSON.stringify(my), JSON.stringify(their), createdAt).run();
+    INSERT INTO trades (id, player_id, owner, title, note, tag, my_json, their_json, likes, vote_w, vote_f, vote_l, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, 0, ?)
+  `).bind(id, playerId, owner, title, note, tag, JSON.stringify(my), JSON.stringify(their), createdAt).run();
 
   const row = await db.prepare("SELECT * FROM trades WHERE id = ?").bind(id).first();
   return json({ ok: true, trade: rowToTrade(row) }, { status: 201 });

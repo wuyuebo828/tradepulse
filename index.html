@@ -3,8 +3,45 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>TradePulse - Grow a Garden Values, Codes and W/F/L Calculator</title>
-  <meta name="description" content="TradePulse is a lightweight Grow a Garden trade calculator, value list and codes hub for mobile Roblox players." />
+  <title>TradePulse - Grow a Garden Values, W/F/L Trade Calculator, Pets, Crops and Mutations</title>
+  <meta name="description" content="TradePulse is a lightweight Grow a Garden value list, W/F/L trade calculator, mutation calculator, codes hub and community voting board for Roblox players." />
+  <meta name="keywords" content="TradePulse, TradePulse values, Grow a Garden values, Grow a Garden calculator, Grow a Garden trade calculator, Grow a Garden WFL, Grow a Garden W/F/L, Grow a Garden pet values, Grow a Garden crop values, Grow a Garden mutations, Grow a Garden codes, Roblox trading values" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#e2231a" />
+  <link rel="canonical" href="https://tradepulsevalues.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="TradePulse" />
+  <meta property="og:title" content="TradePulse - Grow a Garden Values and W/F/L Trade Calculator" />
+  <meta property="og:description" content="Check Grow a Garden pets, crops, mutations, codes and W/F/L trade votes with a fast mobile-friendly Roblox trading tool." />
+  <meta property="og:url" content="https://tradepulsevalues.com/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="TradePulse - Grow a Garden Values and W/F/L Trade Calculator" />
+  <meta name="twitter:description" content="Grow a Garden values, mutation calculator, community W/F/L voting and codes for Roblox players." />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "TradePulse",
+      "url": "https://tradepulsevalues.com/",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Any",
+      "description": "A mobile-friendly Grow a Garden value list, W/F/L trade calculator, mutation calculator and community voting board for Roblox players.",
+      "isAccessibleForFree": true,
+      "featureList": [
+        "Grow a Garden values",
+        "Grow a Garden W/F/L trade calculator",
+        "Grow a Garden pet values",
+        "Grow a Garden crop values",
+        "Grow a Garden mutation calculator",
+        "Community trade voting",
+        "Grow a Garden codes"
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "TradePulse"
+      }
+    }
+  </script>
   <style>
     :root {
       --bg: #071112;
@@ -885,6 +922,28 @@
       display: block;
     }
 
+    .comment-list {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .comment-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: var(--soft);
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .comment-form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+    }
+
     .value-row {
       grid-template-columns: auto 1fr auto;
     }
@@ -1653,6 +1712,19 @@
       }
     }
 
+    function getPlayerId() {
+      try {
+        let playerId = localStorage.getItem("tradePulsePlayerId");
+        if (!playerId) {
+          playerId = window.crypto && crypto.randomUUID ? `player-${crypto.randomUUID()}` : `player-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+          localStorage.setItem("tradePulsePlayerId", playerId);
+        }
+        return playerId;
+      } catch {
+        return `player-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      }
+    }
+
     function getSavedTrades() {
       try {
         const saved = JSON.parse(localStorage.getItem("tradePulseUserTrades") || localStorage.getItem("growToolsUserTrades") || "[]");
@@ -1802,6 +1874,40 @@
       }
     }
 
+    async function fetchMyTrades() {
+      const data = await apiJson(`/api/me/trades?playerId=${encodeURIComponent(state.playerId)}`);
+      return Array.isArray(data?.trades) ? data.trades.map(trade => ({ ...trade, userPost: true, remotePost: true })) : [];
+    }
+
+    async function loadTradeComments(trade) {
+      if (!trade?.id || trade.commentsLoaded) return;
+      const data = await apiJson(`/api/trades/${encodeURIComponent(trade.id)}/comments`);
+      if (Array.isArray(data?.comments)) {
+        trade.comments = data.comments;
+        trade.commentsLoaded = true;
+      } else {
+        trade.comments = trade.comments || [];
+      }
+    }
+
+    async function submitTradeComment(trade, body) {
+      const text = String(body || "").trim();
+      if (!text) return;
+      const data = await apiJson(`/api/trades/${encodeURIComponent(trade.id)}/comments`, {
+        method: "POST",
+        body: JSON.stringify({ author: "Trader", body: text })
+      });
+      const comment = data?.comment || {
+        id: `local-comment-${Date.now()}`,
+        tradeId: trade.id,
+        author: "Trader",
+        body: text,
+        createdAt: new Date().toISOString()
+      };
+      trade.comments = [comment, ...(trade.comments || [])].slice(0, 50);
+      trade.commentsLoaded = true;
+    }
+
     async function loadDataFiles() {
       const [items, codes, updates, trades, mutations] = await Promise.all([
         readJson("data/items.json", itemDatabase),
@@ -1817,7 +1923,8 @@
       VARIANT_MUTATIONS = Array.isArray(mutations.variants) ? mutations.variants : VARIANT_MUTATIONS;
       ENV_MUTATIONS = Array.isArray(mutations.environmental) ? mutations.environmental : ENV_MUTATIONS;
       const remoteTrades = await fetchCommunityTrades();
-      tradeFeed = mergeTrades(remoteTrades, getSavedTrades(), trades);
+      const myRemoteTrades = await fetchMyTrades();
+      tradeFeed = mergeTrades(myRemoteTrades, remoteTrades, getSavedTrades(), trades);
       const remoteReports = await fetchReports();
       if (remoteReports.length) state.intelQueue = mergeReports(remoteReports, state.intelQueue);
       seedFeedShuffle();
@@ -1839,7 +1946,8 @@
       theme: getSavedTheme(),
       adminMode: getSavedAdminMode(),
       intelQueue: getSavedIntel(),
-      apiOnline: false
+      apiOnline: false,
+      playerId: getPlayerId()
     };
 
     const money = new Intl.NumberFormat("en-US");
@@ -2362,7 +2470,17 @@
             <button class="btn comment-btn" data-action="comment">${t("comment")}</button>
           </div>
           <div class="comment-box ${trade.commentsOpen ? "open" : ""}">
-            <input class="input" type="text" placeholder="${t("comment_placeholder")}" />
+            <div class="comment-list">
+              ${(trade.comments || []).slice(0, 5).map(comment => `
+                <div class="comment-item">
+                  <strong>${comment.author || "Trader"}</strong>: ${comment.body}
+                </div>
+              `).join("") || `<div class="meta">${trade.commentsLoaded ? "No comments yet" : "Loading comments..."}</div>`}
+            </div>
+            <div class="comment-form">
+              <input class="input comment-input" type="text" maxlength="300" placeholder="${t("comment_placeholder")}" />
+              <button class="btn submit-comment" type="button">${t("comment")}</button>
+            </div>
           </div>
         `;
         card.querySelectorAll(".vote").forEach(button => {
@@ -2407,10 +2525,21 @@
           }
           renderTradeFeed();
         });
-        card.querySelector(".comment-btn").addEventListener("click", () => {
+        card.querySelector(".comment-btn").addEventListener("click", async () => {
           trade.commentsOpen = !trade.commentsOpen;
-          setSavedTrades(tradeFeed.filter(item => item.userPost));
+          if (trade.commentsOpen) await loadTradeComments(trade);
+          if (trade.userPost) setSavedTrades(tradeFeed.filter(item => item.userPost));
           renderTradeFeed();
+        });
+        const submitComment = async () => {
+          const input = card.querySelector(".comment-input");
+          await submitTradeComment(trade, input.value);
+          input.value = "";
+          renderTradeFeed();
+        };
+        card.querySelector(".submit-comment")?.addEventListener("click", submitComment);
+        card.querySelector(".comment-input")?.addEventListener("keydown", event => {
+          if (event.key === "Enter") submitComment();
         });
         list.appendChild(card);
 
@@ -2427,7 +2556,7 @@
     function getProfileTrades() {
       const source = state.sharedProfileTrades.length
         ? state.sharedProfileTrades
-        : tradeFeed.filter(trade => trade.userPost);
+        : tradeFeed.filter(trade => trade.userPost || trade.playerId === state.playerId);
       const recent = [...source]
         .sort((a, b) => Date.parse(b.createdAt || "") - Date.parse(a.createdAt || ""))
         .slice(0, 4);
@@ -2457,7 +2586,8 @@
       const trades = getProfileTrades();
       const totalVotes = trades.reduce((sum, trade) => sum + trade.votes.W + trade.votes.F + trade.votes.L, 0);
       byId("profile-name").textContent = state.sharedProfileTrades.length ? "Shared Trade Profile" : "TradePulse Trader";
-      byId("profile-stats").textContent = `${trades.length} trades | ${totalVotes} votes`;
+      const totalComments = trades.reduce((sum, trade) => sum + Number(trade.commentCount || (trade.comments || []).length || 0), 0);
+      byId("profile-stats").textContent = `${trades.length} trades | ${totalVotes} votes | ${totalComments} comments`;
       list.innerHTML = "";
 
       if (!trades.length) {
@@ -2477,7 +2607,8 @@
           <div class="box-head">
             <div>
               <h3>${trade.title}</h3>
-              <p class="meta">${itemValueLabel({ sortValue: stats.myTotal })} vs ${itemValueLabel({ sortValue: stats.theirTotal })} | ${stats.votes} votes</p>
+              <p class="meta">${itemValueLabel({ sortValue: stats.myTotal })} vs ${itemValueLabel({ sortValue: stats.theirTotal })} | ${stats.votes} votes | ${Number(trade.commentCount || (trade.comments || []).length || 0)} comments</p>
+              ${trade.latestComment ? `<p class="meta">Latest: ${trade.latestComment}</p>` : ""}
             </div>
             <span class="post-tag ${finalClass}">${finalBadge.label}</span>
           </div>
@@ -2532,6 +2663,7 @@
       const draftTrade = {
         id: `trade-${Date.now()}`,
         owner: "You",
+        playerId: state.playerId,
         userPost: true,
         createdAt: new Date().toISOString(),
         tag: result,
@@ -2550,7 +2682,7 @@
       });
 
       if (postResponse?.trade) {
-        tradeFeed.unshift({ ...postResponse.trade, remotePost: true, userPost: true });
+        tradeFeed.unshift({ ...postResponse.trade, playerId: state.playerId, remotePost: true, userPost: true });
       } else {
         tradeFeed.unshift(draftTrade);
         setSavedTrades(tradeFeed.filter(trade => trade.userPost));

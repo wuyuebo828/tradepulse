@@ -1,6 +1,7 @@
 export function rowToTrade(row) {
   return {
     id: row.id,
+    playerId: row.player_id || undefined,
     owner: row.owner,
     title: row.title,
     note: row.note || "",
