@@ -2,6 +2,7 @@ import { error, json, newId, readJson, requireDb, safeText } from "../../_lib/ht
 
 export async function onRequestGet({ env }) {
   const db = requireDb(env);
+  if (!db) return error("D1 binding DB is not configured", 503);
   const { results } = await db.prepare(`
     SELECT id, type, target, value, note, status, created_at AS createdAt
     FROM reports
@@ -13,6 +14,7 @@ export async function onRequestGet({ env }) {
 
 export async function onRequestPost({ env, request }) {
   const db = requireDb(env);
+  if (!db) return error("D1 binding DB is not configured", 503);
   const body = await readJson(request);
   const target = safeText(body.target, "", 120);
   if (!target) return error("Target is required");

@@ -2,6 +2,7 @@ import { error, json, newId, readJson, requireDb, safeText } from "../../../_lib
 
 export async function onRequestGet({ env, params }) {
   const db = requireDb(env);
+  if (!db) return error("D1 binding DB is not configured", 503);
   const { results } = await db.prepare(`
     SELECT id, trade_id AS tradeId, author, body, created_at AS createdAt
     FROM trade_comments
@@ -14,6 +15,7 @@ export async function onRequestGet({ env, params }) {
 
 export async function onRequestPost({ env, params, request }) {
   const db = requireDb(env);
+  if (!db) return error("D1 binding DB is not configured", 503);
   const body = await readJson(request);
   const comment = safeText(body.body, "", 300);
   if (!comment) return error("Comment is empty");

@@ -18,16 +18,7 @@ export async function readJson(request) {
 }
 
 export function requireDb(env) {
-  if (!env.DB) {
-    throw new Response(JSON.stringify({ ok: false, error: "D1 binding DB is not configured" }), {
-      status: 503,
-      headers: {
-        "content-type": "application/json; charset=utf-8",
-        "cache-control": "no-store"
-      }
-    });
-  }
-  return env.DB;
+  return env.DB || null;
 }
 
 export function newId(prefix) {

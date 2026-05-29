@@ -3,6 +3,7 @@ import { rowToTrade } from "../../../_lib/trades.js";
 
 export async function onRequestPost({ env, params, request }) {
   const db = requireDb(env);
+  if (!db) return error("D1 binding DB is not configured", 503);
   const body = await readJson(request);
   const vote = String(body.vote || "").toUpperCase();
   const column = { W: "vote_w", F: "vote_f", L: "vote_l" }[vote];

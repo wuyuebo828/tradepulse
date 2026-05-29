@@ -3,6 +3,7 @@ import { rowToTrade } from "../../_lib/trades.js";
 
 export async function onRequestGet({ env, request }) {
   const db = requireDb(env);
+  if (!db) return error("D1 binding DB is not configured", 503);
   const url = new URL(request.url);
   const limit = Math.min(Math.max(Number(url.searchParams.get("limit")) || 100, 1), 200);
   const { results } = await db.prepare(`
@@ -16,6 +17,7 @@ export async function onRequestGet({ env, request }) {
 
 export async function onRequestPost({ env, request }) {
   const db = requireDb(env);
+  if (!db) return error("D1 binding DB is not configured", 503);
   const body = await readJson(request);
   const my = safeItems(body.my);
   const their = safeItems(body.their);
