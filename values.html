@@ -14,7 +14,7 @@
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f6f8;color:#111827;line-height:1.55}
     .wrap{width:min(100% - 32px,900px);margin:auto}.top{border-bottom:1px solid #d8dee4;background:#fff}.top .wrap{display:flex;justify-content:space-between;align-items:center;min-height:64px}
     a{color:#d92d20;text-decoration:none;font-weight:800}.brand{font-size:24px;color:#111827}.hero{padding:42px 0 18px}.hero h1{font-size:clamp(32px,6vw,54px);line-height:1.04;margin:0 0 14px}.lead{font-size:18px;color:#667085;max-width:720px}
-    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:24px 0}.card{background:#fff;border:1px solid #d8dee4;border-radius:8px;padding:18px}.card h2{margin:0 0 8px}.list{display:grid;gap:8px}.item{display:flex;justify-content:space-between;border-top:1px solid #eef1f4;padding-top:8px}.cta{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}.btn{background:#d92d20;color:#fff;border-radius:8px;padding:12px 16px}.muted{color:#667085}.footer{border-top:1px solid #d8dee4;padding:24px 0;margin-top:32px;color:#667085}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:24px 0}.card{background:#fff;border:1px solid #d8dee4;border-radius:8px;padding:18px}.card h2{margin:0 0 8px}.card h3{margin:18px 0 8px}.list{display:grid;gap:8px}.item,.ranked li{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #eef1f4;padding-top:8px}.ranked{display:grid;gap:8px;list-style:none;margin:0;padding:0}.ranked span{color:#667085;text-align:right}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.chip{border:1px solid #d8dee4;border-radius:999px;background:#fff;padding:7px 10px;color:#344054;font-size:14px;font-weight:800}.cta{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0}.btn{background:#d92d20;color:#fff;border-radius:8px;padding:12px 16px}.muted{color:#667085}.footer{border-top:1px solid #d8dee4;padding:24px 0;margin-top:32px;color:#667085}
     @media(max-width:700px){.grid{grid-template-columns:1fr}.top .wrap{min-height:56px}.hero{padding-top:28px}}
   </style>
 </head>
@@ -23,36 +23,106 @@
   <main class="wrap">
     <section class="hero">
       <h1>Grow a Garden Values for Pets, Crops and Trading</h1>
-      <p class="lead">Use TradePulse to check Grow a Garden values, compare pet and crop prices, and jump into the W/F/L trade calculator before you accept a Roblox trade.</p>
+      <p class="lead">Use TradePulse to check Grow a Garden values, compare pet and crop prices, search rare item names, and jump into the W/F/L trade calculator before you accept a Roblox trade.</p>
       <div class="cta"><a class="btn" href="/#values">Search all values</a><a class="btn" href="/#calculator">Open trade calculator</a></div>
+    </section>
+    <section class="card">
+      <h2>Grow a Garden value database coverage</h2>
+      <p class="muted">TradePulse currently indexes hundreds of Grow a Garden pets, crops, seeds and gear names for fast lookup. Players can search items such as Fairy, Prismatic Dragon, Rainbow Phoenix, Kitsune, Disco Bee, Eggsnapper, Omniblossom, Infinite Prism, Cosmic Lotus, Unicorn Seed and Rainbow Hoe.</p>
     </section>
     <section class="grid">
       <article class="card">
         <h2>Popular Pet Values</h2>
-        <div class="list">
-          <div class="item"><strong>Fairy</strong><span>Prismatic</span></div>
-          <div class="item"><strong>Prismatic Dragon</strong><span>Prismatic</span></div>
-          <div class="item"><strong>Rainbow Phoenix</strong><span>Prismatic</span></div>
-          <div class="item"><strong>Cosmos Dragon</strong><span>Mythical</span></div>
-          <div class="item"><strong>Rainbow Unicorn</strong><span>Mythical</span></div>
-        </div>
+        <p class="muted">High value pet searches often include exact names plus "value", "worth" or "WFL".</p>
+        <div class="chips">Fairy value, Prismatic Dragon value, Rainbow Phoenix value, Kitsune value, Disco Bee value, Fennec Fox value, Corrupted Kitsune value, Mimic Octopus value, T-Rex value, Golden Goose value</div>
       </article>
       <article class="card">
         <h2>Popular Crop Values</h2>
-        <div class="list">
-          <div class="item"><strong>Eggsnapper</strong><span>Transcendent</span></div>
-          <div class="item"><strong>Omniblossom</strong><span>Transcendent</span></div>
-          <div class="item"><strong>Infinite Prism</strong><span>Transcendent</span></div>
-          <div class="item"><strong>Cosmic Lotus</strong><span>Prismatic</span></div>
-          <div class="item"><strong>Soul Prism</strong><span>Prismatic</span></div>
-        </div>
+        <p class="muted">Crop value checks are useful before mutation multipliers are applied.</p>
+        <div class="chips">Eggsnapper value, Omniblossom value, Infinite Prism value, Cosmic Lotus value, Soul Prism value, Divine Prism value, Void Crystal Vine value, Universalbloom value, Godvine value, Frostwing Berry value</div>
       </article>
+    </section>
+    <section class="card">
+      <h2>Top indexed Grow a Garden items</h2>
+      <ol class="ranked">
+        <li><strong><a href="/items/fairy-value.html">Fairy</a></strong><span>Pet - Prismatic - 8.5M S - 11.5M S</span></li>
+        <li><strong><a href="/items/prismatic-dragon-value.html">Prismatic Dragon</a></strong><span>Pet - Prismatic - 6.8M S - 9.2M S</span></li>
+        <li><strong><a href="/items/rainbow-phoenix-value.html">Rainbow Phoenix</a></strong><span>Pet - Prismatic - 5.95M S - 8.05M S</span></li>
+        <li><strong><a href="/items/cosmos-dragon-value.html">Cosmos Dragon</a></strong><span>Pet - Mythical - 5.5M-7.5M S</span></li>
+        <li><strong><a href="/items/rainbow-unicorn-value.html">Rainbow Unicorn</a></strong><span>Pet - Mythical - 4.3M-5.8M S</span></li>
+        <li><strong><a href="/items/quantum-dragon-value.html">Quantum Dragon</a></strong><span>Pet - Mythical - 3.83M S - 5.17M S</span></li>
+        <li><strong><a href="/items/eggsnapper-value.html">Eggsnapper</a></strong><span>Crop - Transcendent - 1000K S</span></li>
+        <li><strong><a href="/items/omniblossom-value.html">Omniblossom</a></strong><span>Crop - Prismatic - 950K S</span></li>
+        <li><strong><a href="/items/infinite-prism-value.html">Infinite Prism</a></strong><span>Crop - Prismatic - 940K S</span></li>
+        <li><strong><a href="/items/cosmic-lotus-value.html">Cosmic Lotus</a></strong><span>Crop - Prismatic - 910K S</span></li>
+      </ol>
+    </section>
+    <section class="card">
+      <h2>Featured item value pages</h2>
+      <p class="muted">These pages target exact item-name searches such as "Fairy value" or "Kitsune worth". More pages can be added after Search Console shows which names players search most.</p>
+      <div class="chips">
+        <a class="chip" href="/items/fairy-value.html">Fairy value</a>
+        <a class="chip" href="/items/prismatic-dragon-value.html">Prismatic Dragon value</a>
+        <a class="chip" href="/items/rainbow-phoenix-value.html">Rainbow Phoenix value</a>
+        <a class="chip" href="/items/cosmos-dragon-value.html">Cosmos Dragon value</a>
+        <a class="chip" href="/items/rainbow-unicorn-value.html">Rainbow Unicorn value</a>
+        <a class="chip" href="/items/wasp-value.html">Wasp value</a>
+        <a class="chip" href="/items/quantum-dragon-value.html">Quantum Dragon value</a>
+        <a class="chip" href="/items/ethereal-phoenix-value.html">Ethereal Phoenix value</a>
+        <a class="chip" href="/items/void-serpent-value.html">Void Serpent value</a>
+        <a class="chip" href="/items/dimensional-fox-value.html">Dimensional Fox value</a>
+        <a class="chip" href="/items/eggsnapper-value.html">Eggsnapper value</a>
+        <a class="chip" href="/items/omniblossom-value.html">Omniblossom value</a>
+        <a class="chip" href="/items/infinite-prism-value.html">Infinite Prism value</a>
+        <a class="chip" href="/items/cosmic-lotus-value.html">Cosmic Lotus value</a>
+        <a class="chip" href="/items/soul-prism-value.html">Soul Prism value</a>
+        <a class="chip" href="/items/divine-prism-value.html">Divine Prism value</a>
+        <a class="chip" href="/items/void-crystal-vine-value.html">Void Crystal Vine value</a>
+        <a class="chip" href="/items/chaos-prism-value.html">Chaos Prism value</a>
+        <a class="chip" href="/items/eternal-prism-value.html">Eternal Prism value</a>
+        <a class="chip" href="/items/star-prism-value.html">Star Prism value</a>
+        <a class="chip" href="/items/void-prism-value.html">Void Prism value</a>
+        <a class="chip" href="/items/cosmic-prism-value.html">Cosmic Prism value</a>
+        <a class="chip" href="/items/prismatic-lotus-value.html">Prismatic Lotus value</a>
+        <a class="chip" href="/items/heaven-s-gate-value.html">Heaven's Gate value</a>
+        <a class="chip" href="/items/celestial-dragon-value.html">Celestial Dragon value</a>
+        <a class="chip" href="/items/kitsune-value.html">Kitsune value</a>
+        <a class="chip" href="/items/golden-goose-value.html">Golden Goose value</a>
+        <a class="chip" href="/items/divinity-fruit-value.html">Divinity Fruit value</a>
+        <a class="chip" href="/items/seraphim-value.html">Seraphim value</a>
+        <a class="chip" href="/items/universalbloom-value.html">Universalbloom value</a>
+      </div>
+    </section>
+    <section class="card">
+      <h2>All indexed item names</h2>
+      <p class="muted">This index is generated from the live TradePulse item database so players can find exact Grow a Garden item spellings before using the calculator.</p>
+      <div class="chips" id="all-item-keywords">Loading item names...</div>
     </section>
     <section class="card">
       <h2>What is a Grow a Garden value list?</h2>
       <p class="muted">A value list helps players estimate whether a Grow a Garden trade is a win, fair, or loss. TradePulse keeps a lightweight database for fast mobile search and adds community voting so players can react to real trades.</p>
+      <h3>Are TradePulse values official?</h3>
+      <p class="muted">No. TradePulse is a fan-made value tool. Values are estimates and should be checked with community votes, recent trades and in-game demand.</p>
+      <h3>Why do values change?</h3>
+      <p class="muted">Values move when updates, rarity changes, events, duplication concerns, hype or large traders change demand. High-end pets and rare crops usually move faster than common items.</p>
+      <h3>Related tools</h3>
+      <p><a href="/trade-calculator.html">Grow a Garden W/F/L calculator</a> | <a href="/mutations.html">Grow a Garden mutation calculator</a> | <a href="/codes.html">Grow a Garden codes</a></p>
     </section>
   </main>
   <footer class="footer"><div class="wrap">TradePulse is an unofficial fan-made Roblox tool and is not affiliated with Roblox or Grow a Garden.</div></footer>
+  <script>
+    fetch("/data/items.json")
+      .then(response => response.json())
+      .then(items => {
+        const target = document.getElementById("all-item-keywords");
+        const unique = Array.from(new Map(items.map(item => [item.name, item])).values());
+        target.innerHTML = unique
+          .map(item => `<span class="chip">${item.name} ${item.type || "item"} value</span>`)
+          .join("");
+      })
+      .catch(() => {
+        document.getElementById("all-item-keywords").textContent = "Open the TradePulse value list to search all item names.";
+      });
+  </script>
 </body>
 </html>
