@@ -11,6 +11,7 @@ TradePulse now includes a Cloudflare Pages Functions backend so community trades
 - `functions/api/trades/[id]/comments.js`: comment API for later UI expansion.
 - `functions/api/me/trades.js`: anonymous-device profile feedback for a player's own submitted trades.
 - `functions/api/reports/index.js`: price/code/item reports.
+- `functions/api/reports/[id]/status.js`: admin review status updates for player reports.
 
 ## Cloudflare Setup
 
@@ -37,6 +38,7 @@ CREATE INDEX IF NOT EXISTS idx_trades_player_id ON trades(player_id, created_at 
 - The static site still loads normally.
 - If `/api/trades` works, the community feed uses D1 shared data.
 - Each device gets an anonymous `playerId` in localStorage. New trades include this ID, so the Profile page can show feedback on that device's own submissions.
+- Admin mode is opened with `?admin=1#signals`. It shows player reports, lets the owner copy report details, and mark reports as `pending` or `reviewed`.
 - If the API is missing or D1 is not bound yet, the site falls back to local mock/localStorage data.
 - User posts created before the backend remains local only; new posts after D1 is live are shared.
 
