@@ -1738,6 +1738,70 @@
       }
     }
 
+    async function apiJson(path, options = {}) {
+      try {
+        const response = await fetch(path, {
+          cache: "no-store",
+          ...options,
+          headers: {
+            "content-type": "application/json",
+            ...(options.headers || {})
+          }
+        });
+        if (!response.ok) throw new Error(`API ${response.status}`);
+        state.apiOnline = true;
+        return await response.json();
+      } catch {
+        state.apiOnline = false;
+        return null;
+      }
+    }
+
+    function mergeTrades(...lists) {
+      const merged = new Map();
+      lists.flat().filter(Boolean).forEach(trade => {
+        if (!trade || !trade.id) return;
+        merged.set(trade.id, {
+          likes: 0,
+          commentsOpen: false,
+          votes: { W: 0, F: 0, L: 0 },
+          ...trade,
+          votes: trade.votes || { W: 0, F: 0, L: 0 }
+        });
+      });
+      return [...merged.values()];
+    }
+
+    function mergeReports(...lists) {
+      const merged = new Map();
+      lists.flat().filter(Boolean).forEach(report => {
+        if (!report) return;
+        merged.set(report.id || `${report.type}-${report.target}-${report.createdAt}`, report);
+      });
+      return [...merged.values()];
+    }
+
+    async function fetchCommunityTrades() {
+      const data = await apiJson("/api/trades?limit=120");
+      return Array.isArray(data?.trades) ? data.trades.map(trade => ({ ...trade, remotePost: true })) : [];
+    }
+
+    async function fetchReports() {
+      const data = await apiJson("/api/reports");
+      return Array.isArray(data?.reports) ? data.reports : [];
+    }
+
+    function replaceTrade(updated) {
+      if (!updated?.id) return;
+      const index = tradeFeed.findIndex(trade => trade.id === updated.id);
+      const normalized = { ...updated, remotePost: true, commentsOpen: false };
+      if (index >= 0) {
+        tradeFeed[index] = { ...tradeFeed[index], ...normalized };
+      } else {
+        tradeFeed.unshift(normalized);
+      }
+    }
+
     async function loadDataFiles() {
       const [items, codes, updates, trades, mutations] = await Promise.all([
         readJson("data/items.json", itemDatabase),
@@ -1750,9 +1814,12 @@
       itemDatabase = items.map(normalizeItem);
       codeDatabase = codes;
       updateDatabase = updates;
-      tradeFeed = [...getSavedTrades(), ...trades];
       VARIANT_MUTATIONS = Array.isArray(mutations.variants) ? mutations.variants : VARIANT_MUTATIONS;
       ENV_MUTATIONS = Array.isArray(mutations.environmental) ? mutations.environmental : ENV_MUTATIONS;
+      const remoteTrades = await fetchCommunityTrades();
+      tradeFeed = mergeTrades(remoteTrades, getSavedTrades(), trades);
+      const remoteReports = await fetchReports();
+      if (remoteReports.length) state.intelQueue = mergeReports(remoteReports, state.intelQueue);
       seedFeedShuffle();
     }
 
@@ -1771,7 +1838,8 @@
       lang: getSavedLang(),
       theme: getSavedTheme(),
       adminMode: getSavedAdminMode(),
-      intelQueue: getSavedIntel()
+      intelQueue: getSavedIntel(),
+      apiOnline: false
     };
 
     const money = new Intl.NumberFormat("en-US");
@@ -2298,14 +2366,22 @@
           </div>
         `;
         card.querySelectorAll(".vote").forEach(button => {
-          button.addEventListener("click", () => {
+          button.addEventListener("click", async () => {
             const beforeVotes = trade.votes.W + trade.votes.F + trade.votes.L;
             trade.votes[button.dataset.vote] += 1;
-            setSavedTrades(tradeFeed.filter(item => item.userPost));
+            const voteResponse = await apiJson(`/api/trades/${encodeURIComponent(trade.id)}/vote`, {
+              method: "POST",
+              body: JSON.stringify({ vote: button.dataset.vote })
+            });
+            if (voteResponse?.trade) {
+              replaceTrade(voteResponse.trade);
+            } else if (trade.userPost) {
+              setSavedTrades(tradeFeed.filter(item => item.userPost));
+            }
             const afterVotes = trade.votes.W + trade.votes.F + trade.votes.L;
             if (state.feedTab === "needs" && beforeVotes < 20 && afterVotes >= 20) {
               trade.decidedAt = new Date().toISOString();
-              setSavedTrades(tradeFeed.filter(item => item.userPost));
+              if (trade.userPost) setSavedTrades(tradeFeed.filter(item => item.userPost));
               card.classList.add("resolving");
               setTimeout(() => {
                 state.feedTab = "decided";
@@ -2318,9 +2394,17 @@
             renderSignals();
           });
         });
-        card.querySelector(".like-btn").addEventListener("click", () => {
+        card.querySelector(".like-btn").addEventListener("click", async () => {
           trade.likes += 1;
-          setSavedTrades(tradeFeed.filter(item => item.userPost));
+          const likeResponse = await apiJson(`/api/trades/${encodeURIComponent(trade.id)}/like`, {
+            method: "POST",
+            body: JSON.stringify({})
+          });
+          if (likeResponse?.trade) {
+            replaceTrade(likeResponse.trade);
+          } else if (trade.userPost) {
+            setSavedTrades(tradeFeed.filter(item => item.userPost));
+          }
           renderTradeFeed();
         });
         card.querySelector(".comment-btn").addEventListener("click", () => {
@@ -2409,9 +2493,17 @@
           <div class="bars">${renderVoteBars(trade.votes)}</div>
         `;
         row.querySelectorAll(".vote").forEach(button => {
-          button.addEventListener("click", () => {
+          button.addEventListener("click", async () => {
             trade.votes[button.dataset.vote] += 1;
-            if (trade.userPost) setSavedTrades(tradeFeed.filter(item => item.userPost));
+            const voteResponse = await apiJson(`/api/trades/${encodeURIComponent(trade.id)}/vote`, {
+              method: "POST",
+              body: JSON.stringify({ vote: button.dataset.vote })
+            });
+            if (voteResponse?.trade) {
+              replaceTrade(voteResponse.trade);
+            } else if (trade.userPost) {
+              setSavedTrades(tradeFeed.filter(item => item.userPost));
+            }
             renderProfile();
             renderTradeFeed();
             renderSignals();
@@ -2421,7 +2513,7 @@
       });
     }
 
-    function postCurrentTrade() {
+    async function postCurrentTrade() {
       if (!state.my.length || !state.their.length) {
         showToast(t("add_items_first"));
         return;
@@ -2437,7 +2529,7 @@
           ? "Posted from the calculator. The numbers look rough, so this one is ready for public judgment."
           : "Posted from the calculator. The values are close, so the comments may decide it.";
 
-      tradeFeed.unshift({
+      const draftTrade = {
         id: `trade-${Date.now()}`,
         owner: "You",
         userPost: true,
@@ -2450,9 +2542,20 @@
         likes: 0,
         commentsOpen: false,
         votes: { W: 0, F: 0, L: 0 }
+      };
+
+      const postResponse = await apiJson("/api/trades", {
+        method: "POST",
+        body: JSON.stringify(draftTrade)
       });
 
-      setSavedTrades(tradeFeed.filter(trade => trade.userPost));
+      if (postResponse?.trade) {
+        tradeFeed.unshift({ ...postResponse.trade, remotePost: true, userPost: true });
+      } else {
+        tradeFeed.unshift(draftTrade);
+        setSavedTrades(tradeFeed.filter(trade => trade.userPost));
+      }
+
       renderTradeFeed();
       renderProfile();
       renderSignals();
@@ -2567,7 +2670,7 @@
       }
     }
 
-    function addIntel(entry) {
+    async function addIntel(entry) {
       const normalized = {
         id: `intel-${Date.now()}-${Math.random().toString(16).slice(2)}`,
         createdAt: new Date().toISOString(),
@@ -2576,13 +2679,17 @@
         value: entry.value,
         note: entry.note
       };
-      state.intelQueue.unshift(normalized);
-      setSavedIntel(state.intelQueue);
+      const reportResponse = await apiJson("/api/reports", {
+        method: "POST",
+        body: JSON.stringify(normalized)
+      });
+      state.intelQueue.unshift(reportResponse?.report || normalized);
+      if (!reportResponse?.report) setSavedIntel(state.intelQueue);
       renderIntelQueue();
       showToast(t("intel_saved"));
     }
 
-    function submitIntelForm() {
+    async function submitIntelForm() {
       const type = byId("intel-type").value;
       const target = byId("intel-target").value.trim();
       const value = byId("intel-value").value.trim();
@@ -2593,7 +2700,7 @@
         return;
       }
 
-      addIntel({ type, target, value, note });
+      await addIntel({ type, target, value, note });
       byId("intel-target").value = "";
       byId("intel-value").value = "";
       byId("intel-note").value = "";
