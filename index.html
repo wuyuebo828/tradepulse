@@ -837,6 +837,29 @@
       margin-top: 10px;
     }
 
+    .bot-insight {
+      display: grid;
+      gap: 5px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--soft);
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    .bot-insight strong {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      color: var(--text);
+    }
+
+    .bot-insight .post-tag {
+      min-height: 24px;
+      font-size: 12px;
+    }
+
     .feed-note {
       display: flex;
       flex-wrap: wrap;
@@ -2125,6 +2148,52 @@
       return { label: "Fair-ish: Let the comments decide", tone: "fair", badge: "Fair Dealer" };
     }
 
+    function botCopy(key) {
+      const zh = state.lang === "zh";
+      const text = {
+        label: zh ? "TradePulse 机器人" : "TradePulse Bot",
+        note: zh ? "系统参考，不计入真实玩家票数。" : "System estimate only. Real player votes stay separate.",
+        win: zh ? "系统偏 W" : "Bot leans W",
+        loss: zh ? "系统偏 L" : "Bot leans L",
+        fair: zh ? "系统认为公平" : "Bot says Fair",
+        high: zh ? "高可信" : "High confidence",
+        mid: zh ? "中等可信" : "Medium confidence",
+        low: zh ? "低可信" : "Low confidence",
+        reasonWin: zh ? "对方报价高于你的报价，先看作可能赚。" : "Their side is higher value, so this starts as a possible win.",
+        reasonLoss: zh ? "你的报价高于对方报价，建议等玩家投票确认。" : "Your side is higher value, so wait for player votes before trusting it.",
+        reasonFair: zh ? "双方差距不大，评论和需求会更重要。" : "Both sides are close, so comments and demand matter more."
+      };
+      return text[key];
+    }
+
+    function botSignal(myTotal, theirTotal) {
+      const base = Math.max(myTotal, theirTotal, 1);
+      const diffRatio = Math.abs(theirTotal - myTotal) / base;
+      const confidence = diffRatio >= 0.45 ? "high" : diffRatio >= 0.18 ? "mid" : "low";
+      if (theirTotal > myTotal && diffRatio > 0.1) {
+        return { result: "W", tone: "win", label: botCopy("win"), confidence: botCopy(confidence), reason: botCopy("reasonWin") };
+      }
+      if (myTotal > theirTotal && diffRatio > 0.1) {
+        return { result: "L", tone: "loss", label: botCopy("loss"), confidence: botCopy(confidence), reason: botCopy("reasonLoss") };
+      }
+      return { result: "F", tone: "fair", label: botCopy("fair"), confidence: botCopy(confidence), reason: botCopy("reasonFair") };
+    }
+
+    function renderBotInsight(myTotal, theirTotal) {
+      const signal = botSignal(myTotal, theirTotal);
+      const tagClass = signal.tone === "win" ? "win-tag" : signal.tone === "loss" ? "loss-tag" : "fair-tag";
+      return `
+        <div class="bot-insight">
+          <strong>
+            ${botCopy("label")}
+            <span class="post-tag ${tagClass}">${signal.label}</span>
+            <span class="pill">${signal.confidence}</span>
+          </strong>
+          <p class="meta">${signal.reason} ${botCopy("note")}</p>
+        </div>
+      `;
+    }
+
     function renderOffer(side) {
       const list = byId(`${side}-list`);
       list.innerHTML = "";
@@ -2501,6 +2570,7 @@
             ${stats.decided ? `<span class="post-tag ${finalClass}">${t("final_badge")}: ${finalBadge.label}</span>` : ""}
           </div>
           <p class="sub">${trade.note}</p>
+          ${renderBotInsight(myTotal, theirTotal)}
           <div class="trade-grid">
             <div class="trade-box">
               <p class="meta">${t("my_offer")}</p>
@@ -2668,6 +2738,7 @@
             <div class="trade-box"><p class="meta">${t("my_offer")}</p><strong>${myNames}</strong></div>
             <div class="trade-box"><p class="meta">${t("their_offer")}</p><strong>${theirNames}</strong></div>
           </div>
+          ${renderBotInsight(stats.myTotal, stats.theirTotal)}
           <div class="vote-grid">
             <button class="vote" data-vote="W">W<br><span>${t("win")}</span></button>
             <button class="vote" data-vote="F">F<br><span>${t("fair")}</span></button>
