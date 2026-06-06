@@ -7,6 +7,13 @@ const articlesPath = path.join(root, "articles.html");
 const sitemapPath = path.join(root, "sitemap.xml");
 const site = "https://tradepulsevalues.com";
 const today = "2026-06-01";
+const analyticsSnippet = `  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1W9TBD5TVF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-1W9TBD5TVF");
+  </script>`;
 
 function read(file) {
   return fs.readFileSync(file, "utf8");
@@ -14,6 +21,15 @@ function read(file) {
 
 function write(file, content) {
   fs.writeFileSync(file, content);
+}
+
+function ensureAnalytics(file) {
+  let html = read(file);
+  if (!html.includes("G-1W9TBD5TVF")) {
+    html = html.replace("</head>", `${analyticsSnippet}\n</head>`);
+    write(file, html);
+  }
+  return html;
 }
 
 function stripTags(value) {
@@ -35,7 +51,7 @@ function titleCaseFromSlug(slug) {
 
 function articleMeta(fileName) {
   const file = path.join(guidesDir, fileName);
-  const html = read(file);
+  const html = ensureAnalytics(file);
   const title = match(html, /<h1[^>]*>([\s\S]*?)<\/h1>/i, match(html, /<title[^>]*>([\s\S]*?)<\/title>/i, titleCaseFromSlug(fileName)));
   const description = match(html, /<meta\s+name=["']description["']\s+content=["']([^"']+)["']/i, "Read this Grow a Garden trading guide from TradePulse.");
   const firstParagraph = match(html, /<p[^>]*>([\s\S]*?)<\/p>/i, description);
@@ -85,6 +101,7 @@ function renderArticlesPage(articles) {
   <style>
     body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f6f8;color:#111827;line-height:1.55}.wrap{width:min(100% - 32px,900px);margin:auto}.top{border-bottom:1px solid #d8dee4;background:#fff}.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:14px;min-height:64px}a{color:#d92d20;text-decoration:none;font-weight:800}.brand{font-size:24px;color:#111827}.nav{display:flex;gap:14px;flex-wrap:wrap}.hero{padding:42px 0 18px}.hero h1{font-size:clamp(32px,6vw,54px);line-height:1.04;margin:0 0 14px}.lead{font-size:18px;color:#667085;max-width:720px}.card{background:#fff;border:1px solid #d8dee4;border-radius:8px;padding:18px;margin:16px 0}.card h2{margin:0 0 8px}.meta{color:#667085}.pill{display:inline-block;border:1px solid #d8dee4;border-radius:999px;padding:7px 10px;margin:4px;background:#fff;color:#344054;font-size:14px;font-weight:800}.footer{border-top:1px solid #d8dee4;padding:24px 0;margin-top:32px;color:#667085}@media(max-width:700px){.top .wrap{align-items:flex-start;flex-direction:column;padding:12px 0}.hero{padding-top:28px}}
   </style>
+${analyticsSnippet}
 </head>
 <body>
   <header class="top">
